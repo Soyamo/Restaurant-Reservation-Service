@@ -54,6 +54,9 @@ namespace Restaurant_Reservation_System_FinalProject_26
             this.menuItemsTableAdapter.Fill(this.restaurant_serviceDataSet2.MenuItems);
 
             cnn = new SqlConnection(conString);
+            cbDeleteItem.Visible = true;
+            cbDeleteReserve.Visible = true;
+            cbDeleteUser.Visible = true;
         }
         private void cbResFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -693,5 +696,21 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
         }
 
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+            cbDeleteUser.Visible = true;
+        }
+
+        private void tabPage2_Click(object sender, EventArgs e)
+        {
+            cbDeleteItem.Visible = true;
+         
+        }
+
+        private void tabPage3_Click(object sender, EventArgs e)
+        {
+            cbDeleteReserve.Visible = true;
+
+        }
     }
 }
