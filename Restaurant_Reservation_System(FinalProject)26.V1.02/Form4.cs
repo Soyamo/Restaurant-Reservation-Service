@@ -24,17 +24,25 @@ namespace Restaurant_Reservation_System_FinalProject_26
         public string UserSurname { get; set; }
         public string UserEmail { get; set; }
         public string UserPhoneNumber { get; set; }
+        public string UserHistory { get; set; }
 
         public Form4()
         {
             InitializeComponent();
         }
 
-        public Form4(string name, string surname)
+        public Form4(string name, string surname, string email, string phoneNumber, string history)
         {
             InitializeComponent();
             tabControl1.SelectedIndex = 0;
             lblHomeUserName.Text = name + " " + surname;
+
+
+            UserName = name;
+            UserSurname = surname;
+            UserEmail = email;
+            UserPhoneNumber = phoneNumber;
+            UserHistory = history;
         }
 
         private void pbRes1_Click(object sender, EventArgs e)
@@ -53,7 +61,7 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
         private void pbRes3_Click(object sender, EventArgs e)
         {
-           Form7 Res3 = new Form7();
+           Form7 Res3 = new Form7(UserName, UserSurname, UserEmail, UserPhoneNumber);
            Res3.Show();
            this.Hide();
         }
@@ -66,6 +74,11 @@ namespace Restaurant_Reservation_System_FinalProject_26
         }
 
         private void Form4_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblHistory_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

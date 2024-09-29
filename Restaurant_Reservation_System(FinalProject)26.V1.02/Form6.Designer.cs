@@ -31,21 +31,19 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form6));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.numericUpDown1_Pace = new System.Windows.Forms.NumericUpDown();
+            this.cd_Pace = new System.Windows.Forms.MonthCalendar();
+            this.cbRequest_Pace = new System.Windows.Forms.ComboBox();
             this.cbTime_Pace = new System.Windows.Forms.ComboBox();
             this.label20 = new System.Windows.Forms.Label();
             this.lblNoOfSeats_Pace = new System.Windows.Forms.Label();
-            this.TxtNoOfGuests_Pace = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnHomePace = new System.Windows.Forms.Button();
             this.btnSubmit_Pace = new System.Windows.Forms.Button();
-            this.txtRequest_Pace = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.txtOther_Pace = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
             this.cbReserveType_Pace = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.dateTime_Pace = new System.Windows.Forms.DateTimePicker();
             this.label8 = new System.Windows.Forms.Label();
             this.txtPhone_Pace = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -153,8 +151,11 @@
             this.btnReview_Pace = new System.Windows.Forms.Button();
             this.lbReview_Pace = new System.Windows.Forms.ListBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.BtnSeeHst = new System.Windows.Forms.Button();
+            this.lbPaceHistory = new System.Windows.Forms.ListBox();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1_Pace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.tabControl2.SuspendLayout();
@@ -204,21 +205,19 @@
             // 
             this.tabPage2.BackColor = System.Drawing.Color.Silver;
             this.tabPage2.BackgroundImage = global::Restaurant_Reservation_System_FinalProject_26.Properties.Resources.pace1;
+            this.tabPage2.Controls.Add(this.numericUpDown1_Pace);
+            this.tabPage2.Controls.Add(this.cd_Pace);
+            this.tabPage2.Controls.Add(this.cbRequest_Pace);
             this.tabPage2.Controls.Add(this.cbTime_Pace);
             this.tabPage2.Controls.Add(this.label20);
             this.tabPage2.Controls.Add(this.lblNoOfSeats_Pace);
-            this.tabPage2.Controls.Add(this.TxtNoOfGuests_Pace);
             this.tabPage2.Controls.Add(this.pictureBox1);
             this.tabPage2.Controls.Add(this.btnHomePace);
             this.tabPage2.Controls.Add(this.btnSubmit_Pace);
-            this.tabPage2.Controls.Add(this.txtRequest_Pace);
             this.tabPage2.Controls.Add(this.label12);
-            this.tabPage2.Controls.Add(this.txtOther_Pace);
-            this.tabPage2.Controls.Add(this.label11);
             this.tabPage2.Controls.Add(this.cbReserveType_Pace);
             this.tabPage2.Controls.Add(this.label10);
             this.tabPage2.Controls.Add(this.label9);
-            this.tabPage2.Controls.Add(this.dateTime_Pace);
             this.tabPage2.Controls.Add(this.label8);
             this.tabPage2.Controls.Add(this.txtPhone_Pace);
             this.tabPage2.Controls.Add(this.label7);
@@ -238,18 +237,123 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Reserving";
             // 
+            // numericUpDown1_Pace
+            // 
+            this.numericUpDown1_Pace.Location = new System.Drawing.Point(28, 328);
+            this.numericUpDown1_Pace.Name = "numericUpDown1_Pace";
+            this.numericUpDown1_Pace.Size = new System.Drawing.Size(120, 22);
+            this.numericUpDown1_Pace.TabIndex = 59;
+            this.numericUpDown1_Pace.ValueChanged += new System.EventHandler(this.numericUpDown1_Pace_ValueChanged);
+            // 
+            // cd_Pace
+            // 
+            this.cd_Pace.Location = new System.Drawing.Point(385, 212);
+            this.cd_Pace.Name = "cd_Pace";
+            this.cd_Pace.TabIndex = 58;
+            // 
+            // cbRequest_Pace
+            // 
+            this.cbRequest_Pace.FormattingEnabled = true;
+            this.cbRequest_Pace.Items.AddRange(new object[] {
+            "Choose special request",
+            "",
+            "Flower arrangement",
+            "",
+            "Chocolate cake",
+            "",
+            "Live music",
+            "",
+            "Special menu",
+            "",
+            "Santa appearance",
+            "",
+            "Projector setup",
+            "",
+            "Balcony seating",
+            "",
+            "Outdoor setting",
+            "",
+            "Reserved area",
+            "",
+            "Seasonal menu",
+            "",
+            "Fireworks"});
+            this.cbRequest_Pace.Location = new System.Drawing.Point(705, 266);
+            this.cbRequest_Pace.Name = "cbRequest_Pace";
+            this.cbRequest_Pace.Size = new System.Drawing.Size(195, 22);
+            this.cbRequest_Pace.TabIndex = 57;
+            // 
             // cbTime_Pace
             // 
             this.cbTime_Pace.FormattingEnabled = true;
             this.cbTime_Pace.Items.AddRange(new object[] {
             "Choose time to book:",
-            "09:00 pm",
-            "11:00 pm",
-            "13:00 pm",
-            "15:00 pm",
-            "18:00 pm",
-            "21:00 pm"});
-            this.cbTime_Pace.Location = new System.Drawing.Point(387, 316);
+            "08:00:00",
+            "",
+            "08:30:00",
+            "",
+            "09:00:00",
+            "",
+            "09:30:00",
+            "",
+            "10:00:00",
+            "",
+            "10:30:00",
+            "",
+            "11:00:00",
+            "",
+            "11:30:00",
+            "",
+            "12:00:00",
+            "",
+            "12:30:00",
+            "",
+            "13:00:00",
+            "",
+            "13:30:00",
+            "",
+            "14:00:00",
+            "",
+            "14:30:00",
+            "",
+            "15:00:00",
+            "",
+            "15:30:00",
+            "",
+            "16:00:00",
+            "",
+            "16:30:00",
+            "",
+            "17:00:00",
+            "",
+            "17:30:00",
+            "",
+            "18:00:00",
+            "",
+            "18:30:00",
+            "",
+            "19:00:00",
+            "",
+            "19:30:00",
+            "",
+            "20:00:00",
+            "",
+            "20:30:00",
+            "",
+            "21:00:00",
+            "",
+            "21:30:00",
+            "",
+            "22:00:00",
+            "",
+            "22:30:00",
+            "",
+            "23:00:00",
+            "",
+            "",
+            "",
+            ""});
+            this.cbTime_Pace.Location = new System.Drawing.Point(219, 328);
             this.cbTime_Pace.Name = "cbTime_Pace";
             this.cbTime_Pace.Size = new System.Drawing.Size(121, 22);
             this.cbTime_Pace.TabIndex = 55;
@@ -260,7 +364,7 @@
             this.label20.BackColor = System.Drawing.Color.Transparent;
             this.label20.Font = new System.Drawing.Font("Microsoft PhagsPa", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label20.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label20.Location = new System.Drawing.Point(383, 293);
+            this.label20.Location = new System.Drawing.Point(215, 305);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(45, 20);
             this.label20.TabIndex = 54;
@@ -277,13 +381,6 @@
             this.lblNoOfSeats_Pace.Size = new System.Drawing.Size(54, 15);
             this.lblNoOfSeats_Pace.TabIndex = 50;
             this.lblNoOfSeats_Pace.Text = "Seats left";
-            // 
-            // TxtNoOfGuests_Pace
-            // 
-            this.TxtNoOfGuests_Pace.Location = new System.Drawing.Point(26, 327);
-            this.TxtNoOfGuests_Pace.Name = "TxtNoOfGuests_Pace";
-            this.TxtNoOfGuests_Pace.Size = new System.Drawing.Size(109, 22);
-            this.TxtNoOfGuests_Pace.TabIndex = 49;
             // 
             // pictureBox1
             // 
@@ -321,43 +418,17 @@
             this.btnSubmit_Pace.UseVisualStyleBackColor = false;
             this.btnSubmit_Pace.Click += new System.EventHandler(this.btnSubmit_Pace_Click);
             // 
-            // txtRequest_Pace
-            // 
-            this.txtRequest_Pace.Location = new System.Drawing.Point(705, 291);
-            this.txtRequest_Pace.Name = "txtRequest_Pace";
-            this.txtRequest_Pace.Size = new System.Drawing.Size(199, 22);
-            this.txtRequest_Pace.TabIndex = 44;
-            // 
             // label12
             // 
             this.label12.AutoSize = true;
             this.label12.BackColor = System.Drawing.Color.Transparent;
             this.label12.Font = new System.Drawing.Font("Microsoft PhagsPa", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.ForeColor = System.Drawing.SystemColors.Info;
-            this.label12.Location = new System.Drawing.Point(700, 268);
+            this.label12.Location = new System.Drawing.Point(701, 243);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(143, 20);
             this.label12.TabIndex = 43;
             this.label12.Text = "Any special requests";
-            // 
-            // txtOther_Pace
-            // 
-            this.txtOther_Pace.Location = new System.Drawing.Point(701, 218);
-            this.txtOther_Pace.Name = "txtOther_Pace";
-            this.txtOther_Pace.Size = new System.Drawing.Size(199, 22);
-            this.txtOther_Pace.TabIndex = 42;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.BackColor = System.Drawing.Color.Transparent;
-            this.label11.Font = new System.Drawing.Font("Microsoft PhagsPa", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.ForeColor = System.Drawing.SystemColors.Info;
-            this.label11.Location = new System.Drawing.Point(700, 195);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(204, 20);
-            this.label11.TabIndex = 41;
-            this.label11.Text = "If Other above, please specify";
             // 
             // cbReserveType_Pace
             // 
@@ -394,18 +465,11 @@
             this.label9.BackColor = System.Drawing.Color.Transparent;
             this.label9.Font = new System.Drawing.Font("Microsoft PhagsPa", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.SystemColors.Info;
-            this.label9.Location = new System.Drawing.Point(383, 172);
+            this.label9.Location = new System.Drawing.Point(423, 183);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(86, 20);
             this.label9.TabIndex = 38;
             this.label9.Text = "Reservation";
-            // 
-            // dateTime_Pace
-            // 
-            this.dateTime_Pace.Location = new System.Drawing.Point(387, 195);
-            this.dateTime_Pace.Name = "dateTime_Pace";
-            this.dateTime_Pace.Size = new System.Drawing.Size(200, 22);
-            this.dateTime_Pace.TabIndex = 37;
             // 
             // label8
             // 
@@ -921,6 +985,7 @@
             this.tabPage6.Size = new System.Drawing.Size(1210, 411);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "Drinks";
+            this.tabPage6.Click += new System.EventHandler(this.tabPage6_Click);
             // 
             // btnBack1_Pace
             // 
@@ -1547,6 +1612,8 @@
             // 
             this.tabPage5.BackColor = System.Drawing.Color.Silver;
             this.tabPage5.BackgroundImage = global::Restaurant_Reservation_System_FinalProject_26.Properties.Resources.pace1;
+            this.tabPage5.Controls.Add(this.lbPaceHistory);
+            this.tabPage5.Controls.Add(this.BtnSeeHst);
             this.tabPage5.Controls.Add(this.label18);
             this.tabPage5.Controls.Add(this.rtxtReview_Pace);
             this.tabPage5.Controls.Add(this.btnReview_Pace);
@@ -1597,7 +1664,7 @@
             this.lbReview_Pace.ItemHeight = 14;
             this.lbReview_Pace.Location = new System.Drawing.Point(384, 16);
             this.lbReview_Pace.Name = "lbReview_Pace";
-            this.lbReview_Pace.Size = new System.Drawing.Size(632, 270);
+            this.lbReview_Pace.Size = new System.Drawing.Size(413, 270);
             this.lbReview_Pace.TabIndex = 6;
             // 
             // pictureBox5
@@ -1609,6 +1676,25 @@
             this.pictureBox5.Size = new System.Drawing.Size(314, 228);
             this.pictureBox5.TabIndex = 5;
             this.pictureBox5.TabStop = false;
+            // 
+            // BtnSeeHst
+            // 
+            this.BtnSeeHst.Location = new System.Drawing.Point(1129, 320);
+            this.BtnSeeHst.Name = "BtnSeeHst";
+            this.BtnSeeHst.Size = new System.Drawing.Size(75, 23);
+            this.BtnSeeHst.TabIndex = 10;
+            this.BtnSeeHst.Text = "See History";
+            this.BtnSeeHst.UseVisualStyleBackColor = true;
+            this.BtnSeeHst.Click += new System.EventHandler(this.BtnSeeHst_Click);
+            // 
+            // lbPaceHistory
+            // 
+            this.lbPaceHistory.FormattingEnabled = true;
+            this.lbPaceHistory.ItemHeight = 14;
+            this.lbPaceHistory.Location = new System.Drawing.Point(812, 16);
+            this.lbPaceHistory.Name = "lbPaceHistory";
+            this.lbPaceHistory.Size = new System.Drawing.Size(375, 270);
+            this.lbPaceHistory.TabIndex = 11;
             // 
             // Form6
             // 
@@ -1623,6 +1709,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1_Pace)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
@@ -1675,14 +1762,10 @@
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Button btnSubmit_Pace;
-        private System.Windows.Forms.TextBox txtRequest_Pace;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox txtOther_Pace;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox cbReserveType_Pace;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.DateTimePicker dateTime_Pace;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtPhone_Pace;
         private System.Windows.Forms.Label label7;
@@ -1789,9 +1872,13 @@
         private System.Windows.Forms.CheckBox cbcocktail2_Pace;
         private System.Windows.Forms.CheckBox cbcocktail1_Pace;
         private System.Windows.Forms.Label lblNoOfSeats_Pace;
-        private System.Windows.Forms.TextBox TxtNoOfGuests_Pace;
         private System.Windows.Forms.Button btnBack1_Pace;
         private System.Windows.Forms.ComboBox cbTime_Pace;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.ComboBox cbRequest_Pace;
+        private System.Windows.Forms.MonthCalendar cd_Pace;
+        private System.Windows.Forms.NumericUpDown numericUpDown1_Pace;
+        private System.Windows.Forms.Button BtnSeeHst;
+        private System.Windows.Forms.ListBox lbPaceHistory;
     }
 }

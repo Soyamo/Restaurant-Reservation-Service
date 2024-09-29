@@ -38,8 +38,10 @@ namespace Restaurant_Reservation_System_FinalProject_26
         }
         private void Form3_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'restaurant_serviceDataSet6.Reservations' table. You can move, or remove it, as needed.
+            this.reservationsTableAdapter1.Fill(this.restaurant_serviceDataSet6.Reservations);
             // TODO: This line of code loads data into the 'restaurant_serviceDataSet4.Reservations' table. You can move, or remove it, as needed.
-            this.reservationsTableAdapter.Fill(this.restaurant_serviceDataSet4.Reservations);
+            //this.reservationsTableAdapter.Fill(this.restaurant_serviceDataSet4.Reservations);
             // TODO: This line of code loads data into the 'restaurant_serviceDataSet3.User_account' table. You can move, or remove it, as needed.
             this.user_accountTableAdapter.Fill(this.restaurant_serviceDataSet3.User_account);
             // TODO: This line of code loads data into the 'restaurant_serviceDataSet2.MenuItems' table. You can move, or remove it, as needed.

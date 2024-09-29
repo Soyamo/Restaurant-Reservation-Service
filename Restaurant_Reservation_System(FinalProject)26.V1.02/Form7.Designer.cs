@@ -34,18 +34,13 @@
             this.cbTime_Asoka = new System.Windows.Forms.ComboBox();
             this.label20 = new System.Windows.Forms.Label();
             this.lblNoOfSeats_Asoka = new System.Windows.Forms.Label();
-            this.TxtNoOfGuests_Asoka = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnHomeAsoka = new System.Windows.Forms.Button();
             this.btnSubmit_Asoka = new System.Windows.Forms.Button();
-            this.txtAsoka = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.txtOther_Asoka = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
             this.cbReserveType_Asoka = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.dateTime_Asoka = new System.Windows.Forms.DateTimePicker();
             this.label8 = new System.Windows.Forms.Label();
             this.txtPhone_Asoka = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -153,6 +148,9 @@
             this.btnReview_Asoka = new System.Windows.Forms.Button();
             this.lbReview_Asoka = new System.Windows.Forms.ListBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.cd_Asoka = new System.Windows.Forms.MonthCalendar();
+            this.numericUpDown1_Asoka = new System.Windows.Forms.NumericUpDown();
+            this.cbRequest_Asoka = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -184,6 +182,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbAsoka)).BeginInit();
             this.tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1_Asoka)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -205,21 +204,19 @@
             this.tabPage2.BackColor = System.Drawing.Color.Silver;
             this.tabPage2.BackgroundImage = global::Restaurant_Reservation_System_FinalProject_26.Properties.Resources.Asoka1;
             this.tabPage2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.tabPage2.Controls.Add(this.cbRequest_Asoka);
+            this.tabPage2.Controls.Add(this.numericUpDown1_Asoka);
+            this.tabPage2.Controls.Add(this.cd_Asoka);
             this.tabPage2.Controls.Add(this.cbTime_Asoka);
             this.tabPage2.Controls.Add(this.label20);
             this.tabPage2.Controls.Add(this.lblNoOfSeats_Asoka);
-            this.tabPage2.Controls.Add(this.TxtNoOfGuests_Asoka);
             this.tabPage2.Controls.Add(this.pictureBox1);
             this.tabPage2.Controls.Add(this.btnHomeAsoka);
             this.tabPage2.Controls.Add(this.btnSubmit_Asoka);
-            this.tabPage2.Controls.Add(this.txtAsoka);
             this.tabPage2.Controls.Add(this.label12);
-            this.tabPage2.Controls.Add(this.txtOther_Asoka);
-            this.tabPage2.Controls.Add(this.label11);
             this.tabPage2.Controls.Add(this.cbReserveType_Asoka);
             this.tabPage2.Controls.Add(this.label10);
             this.tabPage2.Controls.Add(this.label9);
-            this.tabPage2.Controls.Add(this.dateTime_Asoka);
             this.tabPage2.Controls.Add(this.label8);
             this.tabPage2.Controls.Add(this.txtPhone_Asoka);
             this.tabPage2.Controls.Add(this.label7);
@@ -251,7 +248,7 @@
             "15:00 pm",
             "18:00 pm",
             "21:00 pm"});
-            this.cbTime_Asoka.Location = new System.Drawing.Point(400, 315);
+            this.cbTime_Asoka.Location = new System.Drawing.Point(193, 336);
             this.cbTime_Asoka.Name = "cbTime_Asoka";
             this.cbTime_Asoka.Size = new System.Drawing.Size(121, 22);
             this.cbTime_Asoka.TabIndex = 55;
@@ -262,7 +259,7 @@
             this.label20.BackColor = System.Drawing.Color.Transparent;
             this.label20.Font = new System.Drawing.Font("Microsoft PhagsPa", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label20.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label20.Location = new System.Drawing.Point(397, 291);
+            this.label20.Location = new System.Drawing.Point(189, 313);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(45, 20);
             this.label20.TabIndex = 54;
@@ -279,14 +276,6 @@
             this.lblNoOfSeats_Asoka.Size = new System.Drawing.Size(54, 15);
             this.lblNoOfSeats_Asoka.TabIndex = 51;
             this.lblNoOfSeats_Asoka.Text = "Seats left";
-            // 
-            // TxtNoOfGuests_Asoka
-            // 
-            this.TxtNoOfGuests_Asoka.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.TxtNoOfGuests_Asoka.Location = new System.Drawing.Point(32, 336);
-            this.TxtNoOfGuests_Asoka.Name = "TxtNoOfGuests_Asoka";
-            this.TxtNoOfGuests_Asoka.Size = new System.Drawing.Size(115, 22);
-            this.TxtNoOfGuests_Asoka.TabIndex = 48;
             // 
             // pictureBox1
             // 
@@ -316,21 +305,13 @@
             this.btnSubmit_Asoka.BackColor = System.Drawing.Color.Lime;
             this.btnSubmit_Asoka.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSubmit_Asoka.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.btnSubmit_Asoka.Location = new System.Drawing.Point(747, 282);
+            this.btnSubmit_Asoka.Location = new System.Drawing.Point(776, 336);
             this.btnSubmit_Asoka.Name = "btnSubmit_Asoka";
             this.btnSubmit_Asoka.Size = new System.Drawing.Size(135, 41);
             this.btnSubmit_Asoka.TabIndex = 45;
             this.btnSubmit_Asoka.Text = "Submit";
             this.btnSubmit_Asoka.UseVisualStyleBackColor = false;
             this.btnSubmit_Asoka.Click += new System.EventHandler(this.btnSubmit_Asoka_Click);
-            // 
-            // txtAsoka
-            // 
-            this.txtAsoka.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.txtAsoka.Location = new System.Drawing.Point(746, 245);
-            this.txtAsoka.Name = "txtAsoka";
-            this.txtAsoka.Size = new System.Drawing.Size(199, 22);
-            this.txtAsoka.TabIndex = 44;
             // 
             // label12
             // 
@@ -342,25 +323,6 @@
             this.label12.Size = new System.Drawing.Size(143, 20);
             this.label12.TabIndex = 43;
             this.label12.Text = "Any special requests";
-            // 
-            // txtOther_Asoka
-            // 
-            this.txtOther_Asoka.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.txtOther_Asoka.Location = new System.Drawing.Point(747, 191);
-            this.txtOther_Asoka.Name = "txtOther_Asoka";
-            this.txtOther_Asoka.Size = new System.Drawing.Size(199, 22);
-            this.txtOther_Asoka.TabIndex = 42;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.BackColor = System.Drawing.Color.Transparent;
-            this.label11.Font = new System.Drawing.Font("Microsoft PhagsPa", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(742, 168);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(204, 20);
-            this.label11.TabIndex = 41;
-            this.label11.Text = "If Other above, please specify";
             // 
             // cbReserveType_Asoka
             // 
@@ -396,19 +358,11 @@
             this.label9.AutoSize = true;
             this.label9.BackColor = System.Drawing.Color.Transparent;
             this.label9.Font = new System.Drawing.Font("Microsoft PhagsPa", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(397, 168);
+            this.label9.Location = new System.Drawing.Point(397, 189);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(86, 20);
             this.label9.TabIndex = 38;
             this.label9.Text = "Reservation";
-            // 
-            // dateTime_Asoka
-            // 
-            this.dateTime_Asoka.CalendarMonthBackground = System.Drawing.SystemColors.ScrollBar;
-            this.dateTime_Asoka.Location = new System.Drawing.Point(400, 191);
-            this.dateTime_Asoka.Name = "dateTime_Asoka";
-            this.dateTime_Asoka.Size = new System.Drawing.Size(200, 22);
-            this.dateTime_Asoka.TabIndex = 37;
             // 
             // label8
             // 
@@ -1609,6 +1563,28 @@
             this.pictureBox5.TabIndex = 5;
             this.pictureBox5.TabStop = false;
             // 
+            // cd_Asoka
+            // 
+            this.cd_Asoka.Location = new System.Drawing.Point(390, 215);
+            this.cd_Asoka.Name = "cd_Asoka";
+            this.cd_Asoka.TabIndex = 56;
+            // 
+            // numericUpDown1_Asoka
+            // 
+            this.numericUpDown1_Asoka.Location = new System.Drawing.Point(29, 337);
+            this.numericUpDown1_Asoka.Name = "numericUpDown1_Asoka";
+            this.numericUpDown1_Asoka.Size = new System.Drawing.Size(120, 22);
+            this.numericUpDown1_Asoka.TabIndex = 57;
+            this.numericUpDown1_Asoka.ValueChanged += new System.EventHandler(this.numericUpDown1_Asoka_ValueChanged);
+            // 
+            // cbRequest_Asoka
+            // 
+            this.cbRequest_Asoka.FormattingEnabled = true;
+            this.cbRequest_Asoka.Location = new System.Drawing.Point(746, 246);
+            this.cbRequest_Asoka.Name = "cbRequest_Asoka";
+            this.cbRequest_Asoka.Size = new System.Drawing.Size(196, 22);
+            this.cbRequest_Asoka.TabIndex = 58;
+            // 
             // Form7
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1663,6 +1639,7 @@
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1_Asoka)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1675,14 +1652,10 @@
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Button btnSubmit_Asoka;
-        private System.Windows.Forms.TextBox txtAsoka;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox txtOther_Asoka;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox cbReserveType_Asoka;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.DateTimePicker dateTime_Asoka;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtPhone_Asoka;
         private System.Windows.Forms.Label label7;
@@ -1788,10 +1761,12 @@
         private System.Windows.Forms.CheckBox cbcocktail3_Asoka;
         private System.Windows.Forms.CheckBox cbcocktail2_Asoka;
         private System.Windows.Forms.CheckBox cbcocktail1_Asoka;
-        private System.Windows.Forms.TextBox TxtNoOfGuests_Asoka;
         private System.Windows.Forms.Label lblNoOfSeats_Asoka;
         private System.Windows.Forms.Button btnBack1_Asoka;
         private System.Windows.Forms.ComboBox cbTime_Asoka;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.NumericUpDown numericUpDown1_Asoka;
+        private System.Windows.Forms.MonthCalendar cd_Asoka;
+        private System.Windows.Forms.ComboBox cbRequest_Asoka;
     }
 }

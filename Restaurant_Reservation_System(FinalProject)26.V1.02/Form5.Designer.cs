@@ -41,8 +41,6 @@
             this.btnHomeVino = new System.Windows.Forms.Button();
             this.btnSubmit_Vino = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
-            this.txtOther_Vino = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
             this.cbReserveType_Vino = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -213,8 +211,6 @@
             this.tabPage2.Controls.Add(this.btnHomeVino);
             this.tabPage2.Controls.Add(this.btnSubmit_Vino);
             this.tabPage2.Controls.Add(this.label12);
-            this.tabPage2.Controls.Add(this.txtOther_Vino);
-            this.tabPage2.Controls.Add(this.label11);
             this.tabPage2.Controls.Add(this.cbReserveType_Vino);
             this.tabPage2.Controls.Add(this.label10);
             this.tabPage2.Controls.Add(this.label9);
@@ -260,7 +256,7 @@
             "Candlelight dinner",
             "",
             "Private section"});
-            this.cbRequests_Vino.Location = new System.Drawing.Point(785, 282);
+            this.cbRequests_Vino.Location = new System.Drawing.Point(785, 263);
             this.cbRequests_Vino.Name = "cbRequests_Vino";
             this.cbRequests_Vino.Size = new System.Drawing.Size(196, 22);
             this.cbRequests_Vino.TabIndex = 57;
@@ -275,7 +271,7 @@
             // 
             // cd_vino
             // 
-            this.cd_vino.Location = new System.Drawing.Point(402, 289);
+            this.cd_vino.Location = new System.Drawing.Point(430, 215);
             this.cd_vino.Name = "cd_vino";
             this.cd_vino.TabIndex = 55;
             // 
@@ -421,30 +417,11 @@
             this.label12.BackColor = System.Drawing.Color.Transparent;
             this.label12.Font = new System.Drawing.Font("Microsoft PhagsPa", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label12.Location = new System.Drawing.Point(781, 259);
+            this.label12.Location = new System.Drawing.Point(781, 228);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(143, 20);
             this.label12.TabIndex = 20;
             this.label12.Text = "Any special requests";
-            // 
-            // txtOther_Vino
-            // 
-            this.txtOther_Vino.Location = new System.Drawing.Point(785, 206);
-            this.txtOther_Vino.Name = "txtOther_Vino";
-            this.txtOther_Vino.Size = new System.Drawing.Size(199, 22);
-            this.txtOther_Vino.TabIndex = 19;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.BackColor = System.Drawing.Color.Transparent;
-            this.label11.Font = new System.Drawing.Font("Microsoft PhagsPa", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label11.Location = new System.Drawing.Point(781, 186);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(204, 20);
-            this.label11.TabIndex = 18;
-            this.label11.Text = "If Other above, please specify";
             // 
             // cbReserveType_Vino
             // 
@@ -482,7 +459,7 @@
             this.label9.BackColor = System.Drawing.Color.Transparent;
             this.label9.Font = new System.Drawing.Font("Microsoft PhagsPa", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label9.Location = new System.Drawing.Point(398, 259);
+            this.label9.Location = new System.Drawing.Point(441, 186);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(86, 20);
             this.label9.TabIndex = 15;
@@ -1774,8 +1751,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button btnSubmit_Vino;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox txtOther_Vino;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox cbReserveType_Vino;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnPay_Vino;

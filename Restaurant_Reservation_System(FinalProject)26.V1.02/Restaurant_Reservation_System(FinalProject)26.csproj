@@ -131,6 +131,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>restaurant_serviceDataSet4.xsd</DependentUpon>
     </Compile>
+    <Compile Include="restaurant_serviceDataSet5.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>restaurant_serviceDataSet5.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="restaurant_serviceDataSet6.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>restaurant_serviceDataSet6.xsd</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -225,6 +235,28 @@
     </None>
     <None Include="restaurant_serviceDataSet4.xss">
       <DependentUpon>restaurant_serviceDataSet4.xsd</DependentUpon>
+    </None>
+    <None Include="restaurant_serviceDataSet5.xsc">
+      <DependentUpon>restaurant_serviceDataSet5.xsd</DependentUpon>
+    </None>
+    <None Include="restaurant_serviceDataSet5.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>restaurant_serviceDataSet5.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="restaurant_serviceDataSet5.xss">
+      <DependentUpon>restaurant_serviceDataSet5.xsd</DependentUpon>
+    </None>
+    <None Include="restaurant_serviceDataSet6.xsc">
+      <DependentUpon>restaurant_serviceDataSet6.xsd</DependentUpon>
+    </None>
+    <None Include="restaurant_serviceDataSet6.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>restaurant_serviceDataSet6.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="restaurant_serviceDataSet6.xss">
+      <DependentUpon>restaurant_serviceDataSet6.xsd</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -196,7 +196,7 @@ namespace Restaurant_Reservation_System_FinalProject_26
                         tabControl1.SelectedTab = tabPage3;
                         // Update the total cost
                         UpdateTotal(reservationCost, specialRequestCost, menuItemCost);
-                        UpdateSummary();
+                        UpdateSummary(0, 0);
                     }
                 }
             }
@@ -348,7 +348,7 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
             // Always update and display the summary on tabPage6, even if no new items are selected
             tabControl2.SelectedTab = tabPage6;
-            UpdateSummary(); // Ensure the summary reflects the current order from all previous tabs
+            UpdateSummary(0, 0); // Ensure the summary reflects the current order from all previous tabs
         }
         //8.(Button that skips the menu section)
         private void btnSkip_Vino_Click(object sender, EventArgs e)
@@ -368,10 +368,10 @@ namespace Restaurant_Reservation_System_FinalProject_26
         //(Vino Santo Deserts)
         private void cbDesert1_Vino_CheckedChanged(object sender, EventArgs e)
         {
-            String dessertName = cbDesert1_Vino.Text;
+            
             pbDeserts_Vino.Visible = true;
             pbDeserts_Vino.Image = Properties.Resources.CremeBrulee;
-
+            string dessertName = cbDesert1_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
@@ -388,7 +388,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list bo
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -419,7 +420,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -450,7 +452,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -481,7 +484,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -512,7 +516,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -544,7 +549,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -575,7 +581,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -606,7 +613,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -637,7 +645,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -667,7 +676,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -699,7 +709,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -729,7 +740,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -759,7 +771,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -789,7 +802,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -819,7 +833,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -924,13 +939,14 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             if (lbOrder_Vino.SelectedItems.Count > 0)
             {
-                var itemRemove = new List<object>();
-                decimal totalDeduction = 0m; // Variable to keep track of the total amount to deduct
+                List<object> itemsToRemove = new List<object>();
+                decimal totalDeduction = 0m; // Keep track of the total deduction amount
+
                 foreach (var item in lbOrder_Vino.SelectedItems)
                 {
-                    itemRemove.Add(item);
+                    itemsToRemove.Add(item);
 
-                    // Extract price from the selected item to deduct from the total
+                    // Extract price from the selected item
                     string listItem = item.ToString();
                     int dashIndex = listItem.IndexOf('-');
                     if (dashIndex != -1)
@@ -938,19 +954,22 @@ namespace Restaurant_Reservation_System_FinalProject_26
                         string priceString = listItem.Substring(dashIndex + 1).Trim().Replace("$", "");
                         if (decimal.TryParse(priceString, out decimal price))
                         {
-                            totalDeduction += price; // Sum the prices to be deducted
+                            totalDeduction += price; // Accumulate the amount to deduct
                         }
                     }
                 }
-                foreach (var item in itemRemove)
-                {
-                    lbOrder_Vino.Items.Remove(item); // Remove items from the order list
-                }
-                // Deduct the total price based on removed items
-                UpdateTotal(0, 0, -totalDeduction);
 
-                // Update the summary to reflect the changes
-                UpdateSummary();
+                // Remove selected items
+                foreach (var item in itemsToRemove)
+                {
+                    lbOrder_Vino.Items.Remove(item);
+                }
+
+                // Debugging output to check total deduction after removal
+                Console.WriteLine($"Total Deduction: {totalDeduction}");
+
+                // Recalculate the total price after item removal
+                UpdateTotal(0, 0, -totalDeduction);
             }
             else
             {
@@ -1029,8 +1048,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1060,8 +1079,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1091,8 +1110,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1122,8 +1141,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1153,8 +1172,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1185,8 +1204,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1216,8 +1235,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1247,8 +1266,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1278,8 +1297,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1309,8 +1328,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1341,8 +1360,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1372,8 +1391,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1403,8 +1422,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1434,8 +1453,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1465,8 +1484,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1497,8 +1516,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1528,8 +1547,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1559,8 +1578,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1590,8 +1609,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
-                        UpdateSummary();
+
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1623,7 +1642,7 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         lbOrder_Vino.Items.Add(displayText);
 
-                        UpdateSummary();
+                        CalculateCosts();
                     }
                     else
                     {
@@ -1632,6 +1651,9 @@ namespace Restaurant_Reservation_System_FinalProject_26
                 }
             }
         }
+
+
+
         private void cbReserveType_Vino_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -1657,11 +1679,29 @@ namespace Restaurant_Reservation_System_FinalProject_26
                 MessageBox.Show("Error: " + ex.Message);
             }
         }
+
+
+
         private void numericUpDown_Vino_ValueChanged(object sender, EventArgs e)
         {
-            // Calculate the remaining seats by subtracting the entered seats from the total available seats
+            // Calculate the remaining seats by subtracting the entered seats from the maximum available seats
             int seatsEntered = (int)numericUpDown_Vino.Value;
-            int seatsLeft = totalSeatsAvailable - seatsEntered;
+            int maxAvailableSeats = totalSeatsAvailable; // Consider using a more descriptive variable name
+            int seatsLeft = maxAvailableSeats - seatsEntered;
+
+            // Input validation: Ensure the entered value is not negative and does not exceed the maximum available seats
+            if (seatsEntered < 0)
+            {
+                MessageBox.Show("Error: Please enter a non-negative value.");
+                numericUpDown_Vino.Value = 0;
+                return;
+            }
+            else if (seatsEntered > maxAvailableSeats)
+            {
+                MessageBox.Show("Error: Not enough seats available.");
+                numericUpDown_Vino.Value = maxAvailableSeats;
+                return;
+            }
 
             // Update the label dynamically
             if (seatsLeft >= 0)
@@ -1670,15 +1710,106 @@ namespace Restaurant_Reservation_System_FinalProject_26
             }
             else
             {
-                // Show an error message if the entered value exceeds available seats
+                // This condition should not occur due to the input validation above
                 lblNoOfSeats_Vino.Text = "Seats Left: Not enough seats available";
             }
+
+            CalculateCosts();
         }
+
+        private void CalculateCosts()
+        {
+            decimal rsvpCost, specialRequestCost = 0, menuItemCost = 0;
+            try
+            {
+                using (var cnn = new SqlConnection(conString))
+                {
+                    cnn.Open();
+
+                    // Query to retrieve the user's ID from the database
+                    string selectQuery = "SELECT user_id FROM User_account WHERE email = @email";
+                    using (var selectCmd = new SqlCommand(selectQuery, cnn))
+                    {
+                        selectCmd.Parameters.AddWithValue("@email", txtEmail_Vino.Text);
+                        object result = selectCmd.ExecuteScalar();
+                        this.userId = result != null ? (int)result : throw new Exception("User not found.");
+                    }
+
+                    // Retrieve the RSVP price from the database
+                    string selectRsvpCostQuery = "SELECT rsvp_price FROM Reservations WHERE user_id = @user_id";
+                    using (var selectRsvpCostCmd = new SqlCommand(selectRsvpCostQuery, cnn))
+                    {
+                        selectRsvpCostCmd.Parameters.AddWithValue("@user_id", this.userId);
+                        object rsvpResult = selectRsvpCostCmd.ExecuteScalar();
+                        rsvpCost = rsvpResult != null ? (decimal)rsvpResult : throw new Exception("RSVP cost not found.");
+                    }
+
+                    // Retrieve the number of seats entered
+                    int seatsEntered = (int)numericUpDown_Vino.Value;
+
+                    // Calculate the reservation cost
+                    decimal reservationCost = rsvpCost * seatsEntered;
+
+                    // Calculate special request cost
+                    var specialRequestCosts = new Dictionary<string, decimal>
+                {
+                    { "Projector required", 50 },
+                    { "Auction setup", 100 },
+                    { "Slide show", 20 },
+                    { "Outdoor seating", 30 },
+                    { "Private dining area", 40 },
+                    { "Red carpet entry", 60 },
+                    { "Balcony seating", 70 },
+                    { "Candlelight dinner", 80 },
+                    { "Private section", 90 }
+                };
+
+                    if (cbRequests_Vino.SelectedItem != null &&
+                        specialRequestCosts.TryGetValue(cbRequests_Vino.SelectedItem.ToString(), out specialRequestCost))
+                    {
+                        // Cost found, use it
+                    }
+
+                    // Calculate menu item cost
+                    foreach (var item in lbOrder_Vino.Items)
+                    {
+                        string listItem = item.ToString();
+                        int dashIndex = listItem.IndexOf('-');
+                        if (dashIndex != -1)
+                        {
+                            string priceString = listItem.Substring(dashIndex + 1).Trim().Replace("$", "");
+                            if (decimal.TryParse(priceString, out decimal price))
+                            {
+                                menuItemCost += price;
+                            }
+                        }
+                    }
+
+                    tabControl1.SelectedTab = tabPage3;
+                    // Update the total cost
+                    UpdateTotal(reservationCost, specialRequestCost, menuItemCost);
+                    UpdateSummary(reservationCost, specialRequestCost);
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Error :" + ex.Message);
+            }
+            
+        }
+
+
+
         private void UpdateTotal(decimal reservationCost, decimal specialRequestCost, decimal menuItemCost)
         {
+            // Recalculate the total price
             totalPrice = reservationCost + specialRequestCost + menuItemCost;
 
-            // Clear previous total price entry if it exists
+            // Debugging output to ensure correct values
+            Console.WriteLine($"Reservation Cost: {reservationCost}, Special Request Cost: {specialRequestCost}, Menu Item Cost: {menuItemCost}");
+            Console.WriteLine($"Total Price: {totalPrice}");
+
+            // Remove old "Total Price" entry if exists
             for (int i = lbOrder_Vino.Items.Count - 1; i >= 0; i--)
             {
                 if (lbOrder_Vino.Items[i].ToString().StartsWith("Total Price:"))
@@ -1687,26 +1818,34 @@ namespace Restaurant_Reservation_System_FinalProject_26
                 }
             }
 
-            // Create the total price display text
-            string totalDisplayText = $"Total Price: ${totalPrice:F2}";
-
-            // Add total price at the end of the list
-            lbOrder_Vino.Items.Add(totalDisplayText);
+            // Add the updated total price
+            lbOrder_Vino.Items.Add($"Total Price: ${totalPrice:F2}");
 
             // Update the summary
-            UpdateSummary();
+            UpdateSummary(reservationCost, specialRequestCost);
         }
+
+
+
+
+
         public struct ItemSummary
         {
             public int Count;
             public decimal TotalPrice;
         }
-        private void UpdateSummary()
+
+
+
+
+        private void UpdateSummary(decimal reservationCost, decimal specialRequestCost)
         {
-            lbSummary_Vino.Items.Clear(); // Clear existing items in summary
+            // Clear existing items in the summary
+            lbSummary_Vino.Items.Clear();
 
             // Dictionary to hold item names and their summary data
             Dictionary<string, ItemSummary> itemCounts = new Dictionary<string, ItemSummary>();
+            decimal menuItemCost = 0; // Sum of menu item costs
 
             // Loop through items in lbOrder_Vino
             foreach (var item in lbOrder_Vino.Items)
@@ -1714,7 +1853,7 @@ namespace Restaurant_Reservation_System_FinalProject_26
                 string listItem = item.ToString();
                 int dashIndex = listItem.IndexOf('-');
 
-                if (dashIndex != -1)
+                if (dashIndex != -1 && !listItem.StartsWith("Total Price:"))
                 {
                     // Extract item name and price
                     string itemName = listItem.Substring(0, dashIndex).Trim();
@@ -1722,62 +1861,48 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                     if (decimal.TryParse(priceString, out decimal price))
                     {
+                        menuItemCost += price; // Accumulate total menu item cost
+
                         // Count occurrences and sum prices
                         if (itemCounts.ContainsKey(itemName))
                         {
                             var currentSummary = itemCounts[itemName];
                             currentSummary.Count++;
                             currentSummary.TotalPrice += price;
-                            itemCounts[itemName] = currentSummary; // Update the entry
+                            itemCounts[itemName] = currentSummary;
                         }
                         else
                         {
-                            itemCounts[itemName] = new ItemSummary { Count = 1, TotalPrice = price }; // Initialize
+                            itemCounts[itemName] = new ItemSummary { Count = 1, TotalPrice = price };
                         }
                     }
                 }
             }
 
+            // Debugging output to verify menuItemCost
+            Console.WriteLine($"Menu Item Cost: {menuItemCost}");
+
             // Populate lbSummary_Vino with formatted items
-            decimal totalSummaryPrice = 0;
             foreach (var kvp in itemCounts)
             {
                 string displayText = $"{kvp.Key} ({kvp.Value.Count}) - ${kvp.Value.TotalPrice:F2}";
-                lbSummary_Vino.Items.Add(displayText); // Format: Item (Count) - TotalPrice
-                totalSummaryPrice += kvp.Value.TotalPrice;
+                lbSummary_Vino.Items.Add(displayText);
             }
 
-            // Retrieve the reservation cost and special request cost from the database
-            decimal reservationCost = 0;
-            decimal specialRequestCost = 0;
-            using (SqlConnection conn = new SqlConnection(conString))
-            {
-                string query = "SELECT rsvp_price FROM Reservations WHERE user_id = @user_id";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@user_id", userId);
-                    conn.Open();
-
-                    object result = cmd.ExecuteScalar();
-                    if (result != null)
-                    {
-                        reservationCost = Convert.ToDecimal(result);
-                    }
-                    conn.Close();
-                }
-            }
             // Add the reservation cost and special request cost
-            string reservationCostDisplayText = $"Reservation Cost: ${reservationCost:F2}";
-            lbSummary_Vino.Items.Add(reservationCostDisplayText);
+            lbSummary_Vino.Items.Add($"Reservation Cost: ${reservationCost:F2}");
+            lbSummary_Vino.Items.Add($"Special Request Cost: ${specialRequestCost:F2}");
 
-            string specialRequestCostDisplayText = $"Special Request Cost: ${specialRequestCost:F2}";
-            lbSummary_Vino.Items.Add(specialRequestCostDisplayText);
+            // Calculate and add the total summary price
+            decimal totalSummaryPrice = menuItemCost + reservationCost + specialRequestCost;
 
-            // Add the total summary price
-            decimal totalSummaryPriceWithCosts = totalSummaryPrice + reservationCost + specialRequestCost;
-            string totalSummaryDisplayText = $"Total: ${totalSummaryPriceWithCosts:F2}";
-            lbSummary_Vino.Items.Add(totalSummaryDisplayText);
+            // Debugging output for total summary price
+            Console.WriteLine($"Total Summary Price: {totalSummaryPrice}");
+
+            lbSummary_Vino.Items.Add($"Total: ${totalSummaryPrice:F2}");
         }
+
+
 
         private void lblSubTotal_Vino_Click(object sender, EventArgs e)
         {

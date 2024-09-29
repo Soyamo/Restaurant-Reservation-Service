@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
@@ -25,6 +26,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
         public SqlConnection cnn;
         public DataSet ds;
         public SqlCommand cmd;
+
+        private string userEmail;
 
         public Form2()
         {
@@ -52,51 +55,38 @@ namespace Restaurant_Reservation_System_FinalProject_26
             string enteredEmail = txtUserPhoneEmailLogin.Text;
             string enteredPassword = txtUserLoginPass.Text;
 
-            if (txtUserPhoneEmailLogin.Text != string.Empty)
+            if (!string.IsNullOrEmpty(enteredEmail))
             {
-                if (txtUserLoginPass.Text != string.Empty)
+                if (!string.IsNullOrEmpty(enteredPassword))
                 {
                     var con = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\restaurant_service.mdf;Integrated Security=True");
                     try
                     {
                         con.Open();
-                        // Use a parameterized query to prevent SQL injection
-                        string sqlQuery = $"SELECT * FROM User_account WHERE email = '{enteredEmail}' AND password = '{enteredPassword}'";
-                        SqlCommand sqlCommand = new SqlCommand(sqlQuery, con);
-                        con.Close();
-                        con.Open();
-                        string userInfoQuery = $"SELECT name, surname, email, phone_number FROM User_account WHERE email = '{enteredEmail}' AND password = '{enteredPassword}'";
-                        using (SqlCommand cmd = new SqlCommand(userInfoQuery, con))
+                        // Use parameterized queries to prevent SQL injection
+                        string sqlQuery = "SELECT * FROM User_account WHERE email = @enteredEmail AND password = @enteredPassword";
+                        using (SqlCommand sqlCommand = new SqlCommand(sqlQuery, con))
                         {
-                            cmd.Parameters.AddWithValue("@email", enteredEmail);
-                            cmd.Parameters.AddWithValue("@password", enteredPassword);
-                            using (SqlDataReader reader = cmd.ExecuteReader())
+                            sqlCommand.Parameters.AddWithValue("@enteredEmail", enteredEmail);
+                            sqlCommand.Parameters.AddWithValue("@enteredPassword", enteredPassword);
+
+                            using (SqlDataReader reader = sqlCommand.ExecuteReader())
                             {
                                 if (reader.Read())
                                 {
                                     // Get user information
                                     string name = reader["name"].ToString();
                                     string surname = reader["surname"].ToString();
-                                    string email = reader["email"].ToString();
+                                    userEmail = reader["email"].ToString(); // Save the user's email
                                     string phone_number = reader["phone_number"].ToString();
-                                    // Valid login, do something here (e.g., open a new form)
-                                    MessageBox.Show("Login successful!");
-                                    // Pass the user details to the other forms
-                                    UserName = name;
-                                    UserSurname = surname;
-                                    UserEmail = email;
-                                    UserPhoneNumber = phone_number;
-                                    Form4 frm4 = new Form4(name, surname);
-                                    frm4.UserName = name;
-                                    frm4.UserSurname = surname;
-                                    frm4.UserEmail = email;
-                                    frm4.UserPhoneNumber = phone_number;
-                                    Form5 frm5 = new Form5(name, surname, email, phone_number);
-                                    Form6 frm6 = new Form6(name, surname, email, phone_number);
-                                    Form7 frm7 = new Form7(name, surname, email, phone_number);
 
+                                    // Read user history from file
+                                    string historyFilePath = $"{userEmail}_history.txt";
+                                    string userHistory = File.Exists(historyFilePath) ? File.ReadAllText(historyFilePath) : "No history available.";
+
+                                    // Pass the user details and history to Form4
+                                    Form4 frm4 = new Form4(name, surname, userEmail, phone_number, userHistory);
                                     frm4.Show();
-                                    this.Close();
                                     this.Hide();
                                 }
                                 else
@@ -105,19 +95,24 @@ namespace Restaurant_Reservation_System_FinalProject_26
                                     MessageBox.Show("Invalid login credentials. Please try again.");
                                 }
                             }
-                            con.Close();
                         }
                     }
                     catch (SqlException ex)
                     {
                         MessageBox.Show("Error: " + ex.Message);
                     }
+                    finally
+                    {
+                        con.Close();
+                    }
                 }
-                errorProvider2.SetError(txtUserLoginPass, "Please enter a valid password");
+                else
+                {
+                    errorProvider2.SetError(txtUserLoginPass, "Please enter a valid password");
+                }
             }
             else
             {
-                txtUserPhoneEmailLogin.Text = "";
                 errorProvider1.SetError(txtUserPhoneEmailLogin, "Please enter a valid email address");
             }
         }
