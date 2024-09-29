@@ -340,12 +340,7 @@
             "",
             "22:30:00",
             "",
-            "23:00:00",
-            "",
-            "",
-            "",
-            "",
-            ""});
+            "23:00:00"});
             this.cbTime_Vino.Location = new System.Drawing.Point(235, 327);
             this.cbTime_Vino.Name = "cbTime_Vino";
             this.cbTime_Vino.Size = new System.Drawing.Size(155, 22);

@@ -149,7 +149,7 @@ namespace Restaurant_Reservation_System_FinalProject_26
                 
                 }
 
-            string query2 = "SELECT rsvp_price FROM Reservations WHERE reservation_type = @Reservation_type";
+            //string query2 = "SELECT rsvp_price FROM Reservations WHERE reservation_type = @Reservation_type";
 
 
             tabControl1.SelectedTab = tabPage3;

@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form3));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cbDeleteUser = new System.Windows.Forms.CheckBox();
             this.txtName_Admin = new System.Windows.Forms.TextBox();
             this.txtSurname_Admin = new System.Windows.Forms.TextBox();
             this.txtEmail_Admin = new System.Windows.Forms.TextBox();
@@ -60,12 +61,13 @@
             this.phonenumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.passwordDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.txtResAddress_Admin = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
+            this.cbDeleteItem = new System.Windows.Forms.CheckBox();
             this.txtItemPrice_Admin = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.txtResDescr_Admin = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.txtResName_Admin = new System.Windows.Forms.TextBox();
+            this.txtResID_Admin = new System.Windows.Forms.TextBox();
             this.txtItemName_Admin = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.txtItemID_Admin = new System.Windows.Forms.TextBox();
@@ -85,11 +87,10 @@
             this.menuItemsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.restaurant_serviceDataSet2 = new Restaurant_Reservation_System_FinalProject_26.restaurant_serviceDataSet2();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.txtRsvpTime = new System.Windows.Forms.TextBox();
+            this.cbDeleteReserve = new System.Windows.Forms.CheckBox();
             this.label14 = new System.Windows.Forms.Label();
             this.txtNoGuestsAdmin = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.txtRsvpDate = new System.Windows.Forms.TextBox();
             this.Lbl60 = new System.Windows.Forms.Label();
             this.txtEventType = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
@@ -112,13 +113,19 @@
             this.numberofpeopleDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.reservationtypeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.specialrequestsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rsvp_price = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.reservationsBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.restaurant_serviceDataSet6 = new Restaurant_Reservation_System_FinalProject_26.restaurant_serviceDataSet6();
             this.menuItemsTableAdapter = new Restaurant_Reservation_System_FinalProject_26.restaurant_serviceDataSet2TableAdapters.MenuItemsTableAdapter();
             this.user_accountTableAdapter = new Restaurant_Reservation_System_FinalProject_26.restaurant_serviceDataSet3TableAdapters.User_accountTableAdapter();
             this.reservationsTableAdapter = new Restaurant_Reservation_System_FinalProject_26.restaurant_serviceDataSet4TableAdapters.ReservationsTableAdapter();
-            this.restaurant_serviceDataSet6 = new Restaurant_Reservation_System_FinalProject_26.restaurant_serviceDataSet6();
-            this.reservationsBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.reservationsTableAdapter1 = new Restaurant_Reservation_System_FinalProject_26.restaurant_serviceDataSet6TableAdapters.ReservationsTableAdapter();
-            this.rsvp_price = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cBoxTime = new System.Windows.Forms.ComboBox();
+            this.datePicker = new System.Windows.Forms.DateTimePicker();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtSpecReq = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.txtRSVP_Price = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.useraccountBindingSource)).BeginInit();
@@ -132,8 +139,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.reservationsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.restaurant_serviceDataSet4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.restaurant_serviceDataSet6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.reservationsBindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.restaurant_serviceDataSet6)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -146,12 +153,13 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1231, 499);
+            this.tabControl1.Size = new System.Drawing.Size(1270, 499);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.Silver;
+            this.tabPage1.Controls.Add(this.cbDeleteUser);
             this.tabPage1.Controls.Add(this.txtName_Admin);
             this.tabPage1.Controls.Add(this.txtSurname_Admin);
             this.tabPage1.Controls.Add(this.txtEmail_Admin);
@@ -178,6 +186,16 @@
             this.tabPage1.Size = new System.Drawing.Size(1223, 472);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "User Details";
+            // 
+            // cbDeleteUser
+            // 
+            this.cbDeleteUser.AutoSize = true;
+            this.cbDeleteUser.Location = new System.Drawing.Point(551, 414);
+            this.cbDeleteUser.Name = "cbDeleteUser";
+            this.cbDeleteUser.Size = new System.Drawing.Size(67, 18);
+            this.cbDeleteUser.TabIndex = 22;
+            this.cbDeleteUser.Text = "Confirm!";
+            this.cbDeleteUser.UseVisualStyleBackColor = true;
             // 
             // txtName_Admin
             // 
@@ -325,7 +343,7 @@
             this.cbUserFilter.DataSource = this.useraccountBindingSource;
             this.cbUserFilter.DisplayMember = "email";
             this.cbUserFilter.FormattingEnabled = true;
-            this.cbUserFilter.Location = new System.Drawing.Point(617, 414);
+            this.cbUserFilter.Location = new System.Drawing.Point(659, 410);
             this.cbUserFilter.Name = "cbUserFilter";
             this.cbUserFilter.Size = new System.Drawing.Size(179, 22);
             this.cbUserFilter.TabIndex = 4;
@@ -430,12 +448,13 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.Silver;
-            this.tabPage2.Controls.Add(this.txtResAddress_Admin);
-            this.tabPage2.Controls.Add(this.label12);
+            this.tabPage2.Controls.Add(this.cbDeleteItem);
             this.tabPage2.Controls.Add(this.txtItemPrice_Admin);
+            this.tabPage2.Controls.Add(this.label12);
+            this.tabPage2.Controls.Add(this.txtResDescr_Admin);
             this.tabPage2.Controls.Add(this.label11);
             this.tabPage2.Controls.Add(this.label10);
-            this.tabPage2.Controls.Add(this.txtResName_Admin);
+            this.tabPage2.Controls.Add(this.txtResID_Admin);
             this.tabPage2.Controls.Add(this.txtItemName_Admin);
             this.tabPage2.Controls.Add(this.label9);
             this.tabPage2.Controls.Add(this.txtItemID_Admin);
@@ -454,12 +473,22 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Restaurant Details";
             // 
-            // txtResAddress_Admin
+            // cbDeleteItem
             // 
-            this.txtResAddress_Admin.Location = new System.Drawing.Point(1028, 292);
-            this.txtResAddress_Admin.Name = "txtResAddress_Admin";
-            this.txtResAddress_Admin.Size = new System.Drawing.Size(160, 22);
-            this.txtResAddress_Admin.TabIndex = 16;
+            this.cbDeleteItem.AutoSize = true;
+            this.cbDeleteItem.Location = new System.Drawing.Point(560, 419);
+            this.cbDeleteItem.Name = "cbDeleteItem";
+            this.cbDeleteItem.Size = new System.Drawing.Size(67, 18);
+            this.cbDeleteItem.TabIndex = 23;
+            this.cbDeleteItem.Text = "Confirm!";
+            this.cbDeleteItem.UseVisualStyleBackColor = true;
+            // 
+            // txtItemPrice_Admin
+            // 
+            this.txtItemPrice_Admin.Location = new System.Drawing.Point(1028, 292);
+            this.txtItemPrice_Admin.Name = "txtItemPrice_Admin";
+            this.txtItemPrice_Admin.Size = new System.Drawing.Size(160, 22);
+            this.txtItemPrice_Admin.TabIndex = 16;
             // 
             // label12
             // 
@@ -471,12 +500,12 @@
             this.label12.TabIndex = 15;
             this.label12.Text = "Restaurant_ID:";
             // 
-            // txtItemPrice_Admin
+            // txtResDescr_Admin
             // 
-            this.txtItemPrice_Admin.Location = new System.Drawing.Point(1028, 237);
-            this.txtItemPrice_Admin.Name = "txtItemPrice_Admin";
-            this.txtItemPrice_Admin.Size = new System.Drawing.Size(160, 22);
-            this.txtItemPrice_Admin.TabIndex = 14;
+            this.txtResDescr_Admin.Location = new System.Drawing.Point(1028, 237);
+            this.txtResDescr_Admin.Name = "txtResDescr_Admin";
+            this.txtResDescr_Admin.Size = new System.Drawing.Size(160, 22);
+            this.txtResDescr_Admin.TabIndex = 14;
             // 
             // label11
             // 
@@ -498,12 +527,12 @@
             this.label10.TabIndex = 12;
             this.label10.Text = "Description:";
             // 
-            // txtResName_Admin
+            // txtResID_Admin
             // 
-            this.txtResName_Admin.Location = new System.Drawing.Point(1028, 174);
-            this.txtResName_Admin.Name = "txtResName_Admin";
-            this.txtResName_Admin.Size = new System.Drawing.Size(160, 22);
-            this.txtResName_Admin.TabIndex = 11;
+            this.txtResID_Admin.Location = new System.Drawing.Point(1028, 174);
+            this.txtResID_Admin.Name = "txtResID_Admin";
+            this.txtResID_Admin.Size = new System.Drawing.Size(160, 22);
+            this.txtResID_Admin.TabIndex = 11;
             // 
             // txtItemName_Admin
             // 
@@ -578,6 +607,7 @@
             this.btnDeleteAllItem.TabIndex = 4;
             this.btnDeleteAllItem.Text = "Delete All";
             this.btnDeleteAllItem.UseVisualStyleBackColor = false;
+            this.btnDeleteAllItem.Click += new System.EventHandler(this.btnDeleteAllItem_Click);
             // 
             // btnDeleteItem
             // 
@@ -590,6 +620,7 @@
             this.btnDeleteItem.TabIndex = 3;
             this.btnDeleteItem.Text = "Delete Item";
             this.btnDeleteItem.UseVisualStyleBackColor = false;
+            this.btnDeleteItem.Click += new System.EventHandler(this.btnDeleteItem_Click);
             // 
             // btnUpdateItem
             // 
@@ -602,6 +633,7 @@
             this.btnUpdateItem.TabIndex = 2;
             this.btnUpdateItem.Text = "Update Item";
             this.btnUpdateItem.UseVisualStyleBackColor = false;
+            this.btnUpdateItem.Click += new System.EventHandler(this.btnUpdateItem_Click);
             // 
             // btnAddNewItem
             // 
@@ -614,6 +646,7 @@
             this.btnAddNewItem.TabIndex = 1;
             this.btnAddNewItem.Text = "Add new Item";
             this.btnAddNewItem.UseVisualStyleBackColor = false;
+            this.btnAddNewItem.Click += new System.EventHandler(this.btnAddNewItem_Click);
             // 
             // dataGridView2
             // 
@@ -675,11 +708,16 @@
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.Color.Silver;
-            this.tabPage3.Controls.Add(this.txtRsvpTime);
+            this.tabPage3.Controls.Add(this.label17);
+            this.tabPage3.Controls.Add(this.txtRSVP_Price);
+            this.tabPage3.Controls.Add(this.label5);
+            this.tabPage3.Controls.Add(this.datePicker);
+            this.tabPage3.Controls.Add(this.cBoxTime);
+            this.tabPage3.Controls.Add(this.cbDeleteReserve);
             this.tabPage3.Controls.Add(this.label14);
             this.tabPage3.Controls.Add(this.txtNoGuestsAdmin);
             this.tabPage3.Controls.Add(this.label13);
-            this.tabPage3.Controls.Add(this.txtRsvpDate);
+            this.tabPage3.Controls.Add(this.txtSpecReq);
             this.tabPage3.Controls.Add(this.Lbl60);
             this.tabPage3.Controls.Add(this.txtEventType);
             this.tabPage3.Controls.Add(this.label15);
@@ -694,22 +732,25 @@
             this.tabPage3.Controls.Add(this.dataGridView3);
             this.tabPage3.Location = new System.Drawing.Point(4, 23);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1223, 472);
+            this.tabPage3.Size = new System.Drawing.Size(1262, 472);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Reservation Details";
             // 
-            // txtRsvpTime
+            // cbDeleteReserve
             // 
-            this.txtRsvpTime.Location = new System.Drawing.Point(1051, 212);
-            this.txtRsvpTime.Name = "txtRsvpTime";
-            this.txtRsvpTime.Size = new System.Drawing.Size(160, 22);
-            this.txtRsvpTime.TabIndex = 30;
+            this.cbDeleteReserve.AutoSize = true;
+            this.cbDeleteReserve.Location = new System.Drawing.Point(570, 426);
+            this.cbDeleteReserve.Name = "cbDeleteReserve";
+            this.cbDeleteReserve.Size = new System.Drawing.Size(67, 18);
+            this.cbDeleteReserve.TabIndex = 37;
+            this.cbDeleteReserve.Text = "Confirm!";
+            this.cbDeleteReserve.UseVisualStyleBackColor = true;
             // 
             // label14
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(951, 219);
+            this.label14.Location = new System.Drawing.Point(951, 151);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(65, 15);
             this.label14.TabIndex = 36;
@@ -717,33 +758,26 @@
             // 
             // txtNoGuestsAdmin
             // 
-            this.txtNoGuestsAdmin.Location = new System.Drawing.Point(1051, 263);
+            this.txtNoGuestsAdmin.Location = new System.Drawing.Point(1051, 195);
             this.txtNoGuestsAdmin.Name = "txtNoGuestsAdmin";
-            this.txtNoGuestsAdmin.Size = new System.Drawing.Size(160, 22);
+            this.txtNoGuestsAdmin.Size = new System.Drawing.Size(195, 22);
             this.txtNoGuestsAdmin.TabIndex = 31;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(954, 270);
+            this.label13.Location = new System.Drawing.Point(954, 202);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(82, 15);
             this.label13.TabIndex = 34;
             this.label13.Text = "No. Of Guests:";
             // 
-            // txtRsvpDate
-            // 
-            this.txtRsvpDate.Location = new System.Drawing.Point(1051, 164);
-            this.txtRsvpDate.Name = "txtRsvpDate";
-            this.txtRsvpDate.Size = new System.Drawing.Size(160, 22);
-            this.txtRsvpDate.TabIndex = 29;
-            // 
             // Lbl60
             // 
             this.Lbl60.AutoSize = true;
             this.Lbl60.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Lbl60.Location = new System.Drawing.Point(954, 166);
+            this.Lbl60.Location = new System.Drawing.Point(954, 111);
             this.Lbl60.Name = "Lbl60";
             this.Lbl60.Size = new System.Drawing.Size(63, 15);
             this.Lbl60.TabIndex = 30;
@@ -751,16 +785,16 @@
             // 
             // txtEventType
             // 
-            this.txtEventType.Location = new System.Drawing.Point(1051, 116);
+            this.txtEventType.Location = new System.Drawing.Point(1051, 240);
             this.txtEventType.Name = "txtEventType";
-            this.txtEventType.Size = new System.Drawing.Size(160, 22);
+            this.txtEventType.Size = new System.Drawing.Size(195, 22);
             this.txtEventType.TabIndex = 27;
             // 
             // label15
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(953, 123);
+            this.label15.Location = new System.Drawing.Point(953, 247);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(67, 15);
             this.label15.TabIndex = 26;
@@ -770,7 +804,7 @@
             // 
             this.txtRsvpID.Location = new System.Drawing.Point(1051, 64);
             this.txtRsvpID.Name = "txtRsvpID";
-            this.txtRsvpID.Size = new System.Drawing.Size(160, 22);
+            this.txtRsvpID.Size = new System.Drawing.Size(195, 22);
             this.txtRsvpID.TabIndex = 25;
             // 
             // label16
@@ -788,7 +822,7 @@
             this.btnLogOff3Admin.BackColor = System.Drawing.Color.Crimson;
             this.btnLogOff3Admin.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogOff3Admin.ForeColor = System.Drawing.SystemColors.Info;
-            this.btnLogOff3Admin.Location = new System.Drawing.Point(975, 312);
+            this.btnLogOff3Admin.Location = new System.Drawing.Point(1005, 380);
             this.btnLogOff3Admin.Name = "btnLogOff3Admin";
             this.btnLogOff3Admin.Size = new System.Drawing.Size(215, 38);
             this.btnLogOff3Admin.TabIndex = 23;
@@ -829,18 +863,20 @@
             this.btnDeleteAllRSVP.TabIndex = 21;
             this.btnDeleteAllRSVP.Text = "Delete All";
             this.btnDeleteAllRSVP.UseVisualStyleBackColor = false;
+            this.btnDeleteAllRSVP.Click += new System.EventHandler(this.btnDeleteAllRSVP_Click);
             // 
             // btnDeleteRSVP
             // 
             this.btnDeleteRSVP.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.btnDeleteRSVP.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDeleteRSVP.ForeColor = System.Drawing.SystemColors.Info;
-            this.btnDeleteRSVP.Location = new System.Drawing.Point(337, 424);
+            this.btnDeleteRSVP.Location = new System.Drawing.Point(319, 426);
             this.btnDeleteRSVP.Name = "btnDeleteRSVP";
             this.btnDeleteRSVP.Size = new System.Drawing.Size(84, 38);
             this.btnDeleteRSVP.TabIndex = 20;
             this.btnDeleteRSVP.Text = "Delete RSVP";
             this.btnDeleteRSVP.UseVisualStyleBackColor = false;
+            this.btnDeleteRSVP.Click += new System.EventHandler(this.btnDeleteRSVP_Click);
             // 
             // btnUpdateRSVP
             // 
@@ -853,6 +889,7 @@
             this.btnUpdateRSVP.TabIndex = 19;
             this.btnUpdateRSVP.Text = "Update RSVP";
             this.btnUpdateRSVP.UseVisualStyleBackColor = false;
+            this.btnUpdateRSVP.Click += new System.EventHandler(this.btnUpdateRSVP_Click);
             // 
             // btnAddRSVP
             // 
@@ -865,6 +902,7 @@
             this.btnAddRSVP.TabIndex = 18;
             this.btnAddRSVP.Text = "Add new RSVP";
             this.btnAddRSVP.UseVisualStyleBackColor = false;
+            this.btnAddRSVP.Click += new System.EventHandler(this.btnAddRSVP_Click);
             // 
             // dataGridView3
             // 
@@ -881,9 +919,9 @@
             this.specialrequestsDataGridViewTextBoxColumn,
             this.rsvp_price});
             this.dataGridView3.DataSource = this.reservationsBindingSource1;
-            this.dataGridView3.Location = new System.Drawing.Point(3, 3);
+            this.dataGridView3.Location = new System.Drawing.Point(3, 12);
             this.dataGridView3.Name = "dataGridView3";
-            this.dataGridView3.Size = new System.Drawing.Size(935, 406);
+            this.dataGridView3.Size = new System.Drawing.Size(945, 406);
             this.dataGridView3.TabIndex = 17;
             // 
             // reservationidDataGridViewTextBoxColumn
@@ -935,6 +973,22 @@
             this.specialrequestsDataGridViewTextBoxColumn.HeaderText = "special_requests";
             this.specialrequestsDataGridViewTextBoxColumn.Name = "specialrequestsDataGridViewTextBoxColumn";
             // 
+            // rsvp_price
+            // 
+            this.rsvp_price.DataPropertyName = "rsvp_price";
+            this.rsvp_price.HeaderText = "rsvp_price";
+            this.rsvp_price.Name = "rsvp_price";
+            // 
+            // reservationsBindingSource1
+            // 
+            this.reservationsBindingSource1.DataMember = "Reservations";
+            this.reservationsBindingSource1.DataSource = this.restaurant_serviceDataSet6;
+            // 
+            // restaurant_serviceDataSet6
+            // 
+            this.restaurant_serviceDataSet6.DataSetName = "restaurant_serviceDataSet6";
+            this.restaurant_serviceDataSet6.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
             // menuItemsTableAdapter
             // 
             this.menuItemsTableAdapter.ClearBeforeFill = true;
@@ -947,32 +1001,128 @@
             // 
             this.reservationsTableAdapter.ClearBeforeFill = true;
             // 
-            // restaurant_serviceDataSet6
-            // 
-            this.restaurant_serviceDataSet6.DataSetName = "restaurant_serviceDataSet6";
-            this.restaurant_serviceDataSet6.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // reservationsBindingSource1
-            // 
-            this.reservationsBindingSource1.DataMember = "Reservations";
-            this.reservationsBindingSource1.DataSource = this.restaurant_serviceDataSet6;
-            // 
             // reservationsTableAdapter1
             // 
             this.reservationsTableAdapter1.ClearBeforeFill = true;
             // 
-            // rsvp_price
+            // cBoxTime
             // 
-            this.rsvp_price.DataPropertyName = "rsvp_price";
-            this.rsvp_price.HeaderText = "rsvp_price";
-            this.rsvp_price.Name = "rsvp_price";
+            this.cBoxTime.FormattingEnabled = true;
+            this.cBoxTime.Items.AddRange(new object[] {
+            "08:00:00",
+            "",
+            "08:30:00",
+            "",
+            "09:00:00",
+            "",
+            "09:30:00",
+            "",
+            "10:00:00",
+            "",
+            "10:30:00",
+            "",
+            "11:00:00",
+            "",
+            "11:30:00",
+            "",
+            "12:00:00",
+            "",
+            "12:30:00",
+            "",
+            "13:00:00",
+            "",
+            "13:30:00",
+            "",
+            "14:00:00",
+            "",
+            "14:30:00",
+            "",
+            "15:00:00",
+            "",
+            "15:30:00",
+            "",
+            "16:00:00",
+            "",
+            "16:30:00",
+            "",
+            "17:00:00",
+            "",
+            "17:30:00",
+            "",
+            "18:00:00",
+            "",
+            "18:30:00",
+            "",
+            "19:00:00",
+            "",
+            "19:30:00",
+            "",
+            "20:00:00",
+            "",
+            "20:30:00",
+            "",
+            "21:00:00",
+            "",
+            "21:30:00",
+            "",
+            "22:00:00",
+            "",
+            "22:30:00",
+            "",
+            "23:00:00"});
+            this.cBoxTime.Location = new System.Drawing.Point(1051, 149);
+            this.cBoxTime.Name = "cBoxTime";
+            this.cBoxTime.Size = new System.Drawing.Size(195, 22);
+            this.cBoxTime.TabIndex = 38;
+            this.cBoxTime.Text = "Choose time to book:";
+            // 
+            // datePicker
+            // 
+            this.datePicker.Location = new System.Drawing.Point(1051, 104);
+            this.datePicker.Name = "datePicker";
+            this.datePicker.Size = new System.Drawing.Size(195, 22);
+            this.datePicker.TabIndex = 39;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(957, 292);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(88, 15);
+            this.label5.TabIndex = 40;
+            this.label5.Text = "Special Request";
+            // 
+            // txtSpecReq
+            // 
+            this.txtSpecReq.Location = new System.Drawing.Point(1051, 285);
+            this.txtSpecReq.Name = "txtSpecReq";
+            this.txtSpecReq.Size = new System.Drawing.Size(195, 22);
+            this.txtSpecReq.TabIndex = 29;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.Location = new System.Drawing.Point(957, 332);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(65, 15);
+            this.label17.TabIndex = 42;
+            this.label17.Text = "RSVP Price:";
+            // 
+            // txtRSVP_Price
+            // 
+            this.txtRSVP_Price.Location = new System.Drawing.Point(1051, 325);
+            this.txtRSVP_Price.Name = "txtRSVP_Price";
+            this.txtRSVP_Price.Size = new System.Drawing.Size(195, 22);
+            this.txtRSVP_Price.TabIndex = 41;
             // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.ClientSize = new System.Drawing.Size(1255, 523);
+            this.ClientSize = new System.Drawing.Size(1294, 523);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form3";
@@ -994,8 +1144,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.reservationsBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.restaurant_serviceDataSet4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.restaurant_serviceDataSet6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.reservationsBindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.restaurant_serviceDataSet6)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1034,12 +1184,12 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txtItemID_Admin;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox txtItemPrice_Admin;
+        private System.Windows.Forms.TextBox txtResDescr_Admin;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox txtResName_Admin;
+        private System.Windows.Forms.TextBox txtResID_Admin;
         private System.Windows.Forms.TextBox txtItemName_Admin;
-        private System.Windows.Forms.TextBox txtResAddress_Admin;
+        private System.Windows.Forms.TextBox txtItemPrice_Admin;
         private System.Windows.Forms.Label label12;
         private restaurant_serviceDataSet2 restaurant_serviceDataSet2;
         private System.Windows.Forms.BindingSource menuItemsBindingSource;
@@ -1053,7 +1203,6 @@
         private System.Windows.Forms.BindingSource useraccountBindingSource;
         private restaurant_serviceDataSet3TableAdapters.User_accountTableAdapter user_accountTableAdapter;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TextBox txtRsvpDate;
         private System.Windows.Forms.Label Lbl60;
         private System.Windows.Forms.TextBox txtEventType;
         private System.Windows.Forms.Label label15;
@@ -1079,7 +1228,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn numberofpeopleDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn reservationtypeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn specialrequestsDataGridViewTextBoxColumn;
-        private System.Windows.Forms.TextBox txtRsvpTime;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.DataGridViewTextBoxColumn useridDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn1;
@@ -1091,5 +1239,14 @@
         private System.Windows.Forms.BindingSource reservationsBindingSource1;
         private restaurant_serviceDataSet6TableAdapters.ReservationsTableAdapter reservationsTableAdapter1;
         private System.Windows.Forms.DataGridViewTextBoxColumn rsvp_price;
+        private System.Windows.Forms.CheckBox cbDeleteUser;
+        private System.Windows.Forms.CheckBox cbDeleteItem;
+        private System.Windows.Forms.CheckBox cbDeleteReserve;
+        private System.Windows.Forms.ComboBox cBoxTime;
+        private System.Windows.Forms.DateTimePicker datePicker;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox txtRSVP_Price;
+        private System.Windows.Forms.TextBox txtSpecReq;
     }
 }
