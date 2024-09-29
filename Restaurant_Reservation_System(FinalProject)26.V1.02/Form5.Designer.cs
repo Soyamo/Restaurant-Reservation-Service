@@ -31,21 +31,21 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form5));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.cbRequests_Vino = new System.Windows.Forms.ComboBox();
+            this.numericUpDown_Vino = new System.Windows.Forms.NumericUpDown();
+            this.cd_vino = new System.Windows.Forms.MonthCalendar();
             this.cbTime_Vino = new System.Windows.Forms.ComboBox();
             this.label20 = new System.Windows.Forms.Label();
             this.lblNoOfSeats_Vino = new System.Windows.Forms.Label();
-            this.TxtNoOfGuests_Vino = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnHomeVino = new System.Windows.Forms.Button();
             this.btnSubmit_Vino = new System.Windows.Forms.Button();
-            this.txtRequest_Vino = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.txtOther_Vino = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.cbReserveType_Vino = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.dateTime_Vino = new System.Windows.Forms.DateTimePicker();
             this.label8 = new System.Windows.Forms.Label();
             this.txtPhone_Vino = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -135,11 +135,11 @@
             this.lbSummary_Vino = new System.Windows.Forms.ListBox();
             this.label19 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.DTExpirydate_Vino = new System.Windows.Forms.DateTimePicker();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.txtCVV_Vino = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
-            this.txtExpirydate_Vino = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.pbVino_pay = new System.Windows.Forms.PictureBox();
             this.txtcrdNo_Vino = new System.Windows.Forms.TextBox();
@@ -154,6 +154,7 @@
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Vino)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.tabControl2.SuspendLayout();
@@ -202,21 +203,21 @@
             // 
             this.tabPage2.BackColor = System.Drawing.Color.Silver;
             this.tabPage2.BackgroundImage = global::Restaurant_Reservation_System_FinalProject_26.Properties.Resources._330_768x5911;
+            this.tabPage2.Controls.Add(this.cbRequests_Vino);
+            this.tabPage2.Controls.Add(this.numericUpDown_Vino);
+            this.tabPage2.Controls.Add(this.cd_vino);
             this.tabPage2.Controls.Add(this.cbTime_Vino);
             this.tabPage2.Controls.Add(this.label20);
             this.tabPage2.Controls.Add(this.lblNoOfSeats_Vino);
-            this.tabPage2.Controls.Add(this.TxtNoOfGuests_Vino);
             this.tabPage2.Controls.Add(this.pictureBox1);
             this.tabPage2.Controls.Add(this.btnHomeVino);
             this.tabPage2.Controls.Add(this.btnSubmit_Vino);
-            this.tabPage2.Controls.Add(this.txtRequest_Vino);
             this.tabPage2.Controls.Add(this.label12);
             this.tabPage2.Controls.Add(this.txtOther_Vino);
             this.tabPage2.Controls.Add(this.label11);
             this.tabPage2.Controls.Add(this.cbReserveType_Vino);
             this.tabPage2.Controls.Add(this.label10);
             this.tabPage2.Controls.Add(this.label9);
-            this.tabPage2.Controls.Add(this.dateTime_Vino);
             this.tabPage2.Controls.Add(this.label8);
             this.tabPage2.Controls.Add(this.txtPhone_Vino);
             this.tabPage2.Controls.Add(this.label7);
@@ -236,18 +237,120 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Reserving";
             // 
+            // cbRequests_Vino
+            // 
+            this.cbRequests_Vino.FormattingEnabled = true;
+            this.cbRequests_Vino.Items.AddRange(new object[] {
+            "Choose special request",
+            "",
+            "Projector required",
+            "",
+            "Auction setup",
+            "",
+            "Slide show",
+            "",
+            "Outdoor seating",
+            "",
+            "Private dining area",
+            "",
+            "Red carpet entry",
+            "",
+            "Balcony seating",
+            "",
+            "Candlelight dinner",
+            "",
+            "Private section"});
+            this.cbRequests_Vino.Location = new System.Drawing.Point(785, 282);
+            this.cbRequests_Vino.Name = "cbRequests_Vino";
+            this.cbRequests_Vino.Size = new System.Drawing.Size(196, 22);
+            this.cbRequests_Vino.TabIndex = 57;
+            // 
+            // numericUpDown_Vino
+            // 
+            this.numericUpDown_Vino.Location = new System.Drawing.Point(49, 328);
+            this.numericUpDown_Vino.Name = "numericUpDown_Vino";
+            this.numericUpDown_Vino.Size = new System.Drawing.Size(120, 22);
+            this.numericUpDown_Vino.TabIndex = 56;
+            this.numericUpDown_Vino.ValueChanged += new System.EventHandler(this.numericUpDown_Vino_ValueChanged);
+            // 
+            // cd_vino
+            // 
+            this.cd_vino.Location = new System.Drawing.Point(402, 289);
+            this.cd_vino.Name = "cd_vino";
+            this.cd_vino.TabIndex = 55;
+            // 
             // cbTime_Vino
             // 
             this.cbTime_Vino.FormattingEnabled = true;
             this.cbTime_Vino.Items.AddRange(new object[] {
             "Choose time to book:",
-            "09:00 pm",
-            "11:00 pm",
-            "13:00 pm",
-            "15:00 pm",
-            "18:00 pm",
-            "21:00 pm"});
-            this.cbTime_Vino.Location = new System.Drawing.Point(438, 327);
+            "08:00:00",
+            "",
+            "08:30:00",
+            "",
+            "09:00:00",
+            "",
+            "09:30:00",
+            "",
+            "10:00:00",
+            "",
+            "10:30:00",
+            "",
+            "11:00:00",
+            "",
+            "11:30:00",
+            "",
+            "12:00:00",
+            "",
+            "12:30:00",
+            "",
+            "13:00:00",
+            "",
+            "13:30:00",
+            "",
+            "14:00:00",
+            "",
+            "14:30:00",
+            "",
+            "15:00:00",
+            "",
+            "15:30:00",
+            "",
+            "16:00:00",
+            "",
+            "16:30:00",
+            "",
+            "17:00:00",
+            "",
+            "17:30:00",
+            "",
+            "18:00:00",
+            "",
+            "18:30:00",
+            "",
+            "19:00:00",
+            "",
+            "19:30:00",
+            "",
+            "20:00:00",
+            "",
+            "20:30:00",
+            "",
+            "21:00:00",
+            "",
+            "21:30:00",
+            "",
+            "22:00:00",
+            "",
+            "22:30:00",
+            "",
+            "23:00:00",
+            "",
+            "",
+            "",
+            "",
+            ""});
+            this.cbTime_Vino.Location = new System.Drawing.Point(235, 327);
             this.cbTime_Vino.Name = "cbTime_Vino";
             this.cbTime_Vino.Size = new System.Drawing.Size(155, 22);
             this.cbTime_Vino.TabIndex = 53;
@@ -258,7 +361,7 @@
             this.label20.BackColor = System.Drawing.Color.Transparent;
             this.label20.Font = new System.Drawing.Font("Microsoft PhagsPa", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label20.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label20.Location = new System.Drawing.Point(434, 304);
+            this.label20.Location = new System.Drawing.Point(255, 304);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(45, 20);
             this.label20.TabIndex = 52;
@@ -275,13 +378,6 @@
             this.lblNoOfSeats_Vino.Size = new System.Drawing.Size(54, 15);
             this.lblNoOfSeats_Vino.TabIndex = 51;
             this.lblNoOfSeats_Vino.Text = "Seats left";
-            // 
-            // TxtNoOfGuests_Vino
-            // 
-            this.TxtNoOfGuests_Vino.Location = new System.Drawing.Point(46, 327);
-            this.TxtNoOfGuests_Vino.Name = "TxtNoOfGuests_Vino";
-            this.TxtNoOfGuests_Vino.Size = new System.Drawing.Size(108, 22);
-            this.TxtNoOfGuests_Vino.TabIndex = 49;
             // 
             // pictureBox1
             // 
@@ -318,13 +414,6 @@
             this.btnSubmit_Vino.Text = "Submit";
             this.btnSubmit_Vino.UseVisualStyleBackColor = false;
             this.btnSubmit_Vino.Click += new System.EventHandler(this.btnSubmit_Vino_Click);
-            // 
-            // txtRequest_Vino
-            // 
-            this.txtRequest_Vino.Location = new System.Drawing.Point(782, 282);
-            this.txtRequest_Vino.Name = "txtRequest_Vino";
-            this.txtRequest_Vino.Size = new System.Drawing.Size(199, 22);
-            this.txtRequest_Vino.TabIndex = 21;
             // 
             // label12
             // 
@@ -373,6 +462,7 @@
             this.cbReserveType_Vino.Name = "cbReserveType_Vino";
             this.cbReserveType_Vino.Size = new System.Drawing.Size(196, 22);
             this.cbReserveType_Vino.TabIndex = 17;
+            this.cbReserveType_Vino.SelectedIndexChanged += new System.EventHandler(this.cbReserveType_Vino_SelectedIndexChanged);
             // 
             // label10
             // 
@@ -392,18 +482,11 @@
             this.label9.BackColor = System.Drawing.Color.Transparent;
             this.label9.Font = new System.Drawing.Font("Microsoft PhagsPa", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label9.Location = new System.Drawing.Point(434, 186);
+            this.label9.Location = new System.Drawing.Point(398, 259);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(86, 20);
             this.label9.TabIndex = 15;
             this.label9.Text = "Reservation";
-            // 
-            // dateTime_Vino
-            // 
-            this.dateTime_Vino.Location = new System.Drawing.Point(438, 206);
-            this.dateTime_Vino.Name = "dateTime_Vino";
-            this.dateTime_Vino.Size = new System.Drawing.Size(200, 22);
-            this.dateTime_Vino.TabIndex = 14;
             // 
             // label8
             // 
@@ -1378,6 +1461,7 @@
             this.lblSubTotal_Vino.Size = new System.Drawing.Size(16, 15);
             this.lblSubTotal_Vino.TabIndex = 6;
             this.lblSubTotal_Vino.Text = "...";
+            this.lblSubTotal_Vino.Click += new System.EventHandler(this.lblSubTotal_Vino_Click);
             // 
             // lblTotal_Vino
             // 
@@ -1418,11 +1502,11 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.DTExpirydate_Vino);
             this.groupBox1.Controls.Add(this.pictureBox3);
             this.groupBox1.Controls.Add(this.pictureBox2);
             this.groupBox1.Controls.Add(this.txtCVV_Vino);
             this.groupBox1.Controls.Add(this.label16);
-            this.groupBox1.Controls.Add(this.txtExpirydate_Vino);
             this.groupBox1.Controls.Add(this.label15);
             this.groupBox1.Controls.Add(this.pbVino_pay);
             this.groupBox1.Controls.Add(this.txtcrdNo_Vino);
@@ -1437,6 +1521,17 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Payment Details";
+            // 
+            // DTExpirydate_Vino
+            // 
+            this.DTExpirydate_Vino.CustomFormat = "MM/yy";
+            this.DTExpirydate_Vino.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.DTExpirydate_Vino.Location = new System.Drawing.Point(20, 251);
+            this.DTExpirydate_Vino.MaxDate = new System.DateTime(2040, 1, 1, 0, 0, 0, 0);
+            this.DTExpirydate_Vino.MinDate = new System.DateTime(2024, 9, 6, 0, 0, 0, 0);
+            this.DTExpirydate_Vino.Name = "DTExpirydate_Vino";
+            this.DTExpirydate_Vino.Size = new System.Drawing.Size(88, 22);
+            this.DTExpirydate_Vino.TabIndex = 11;
             // 
             // pictureBox3
             // 
@@ -1475,13 +1570,6 @@
             this.label16.Size = new System.Drawing.Size(30, 14);
             this.label16.TabIndex = 7;
             this.label16.Text = "CVV:";
-            // 
-            // txtExpirydate_Vino
-            // 
-            this.txtExpirydate_Vino.Location = new System.Drawing.Point(10, 251);
-            this.txtExpirydate_Vino.Name = "txtExpirydate_Vino";
-            this.txtExpirydate_Vino.Size = new System.Drawing.Size(98, 22);
-            this.txtExpirydate_Vino.TabIndex = 6;
             // 
             // label15
             // 
@@ -1616,10 +1704,10 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form5";
             this.Text = "Vino Santo";
-            this.Load += new System.EventHandler(this.Form5_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Vino)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
@@ -1684,9 +1772,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.DateTimePicker dateTime_Vino;
         private System.Windows.Forms.Button btnSubmit_Vino;
-        private System.Windows.Forms.TextBox txtRequest_Vino;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox txtOther_Vino;
         private System.Windows.Forms.Label label11;
@@ -1703,7 +1789,6 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.TextBox txtCVV_Vino;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TextBox txtExpirydate_Vino;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.PictureBox pbVino_pay;
         private System.Windows.Forms.TextBox txtcrdNo_Vino;
@@ -1783,10 +1868,13 @@
         private System.Windows.Forms.CheckBox cbCocktail3_Vino;
         private System.Windows.Forms.CheckBox cbcocktail2_Vino;
         private System.Windows.Forms.CheckBox cbcocktail1_Vino;
-        private System.Windows.Forms.TextBox TxtNoOfGuests_Vino;
         private System.Windows.Forms.Label lblNoOfSeats_Vino;
         private System.Windows.Forms.Button btnBack1_Vino;
         private System.Windows.Forms.ComboBox cbTime_Vino;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.DateTimePicker DTExpirydate_Vino;
+        private System.Windows.Forms.MonthCalendar cd_vino;
+        private System.Windows.Forms.NumericUpDown numericUpDown_Vino;
+        private System.Windows.Forms.ComboBox cbRequests_Vino;
     }
 }

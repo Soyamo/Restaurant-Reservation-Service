@@ -14,6 +14,11 @@ namespace Restaurant_Reservation_System_FinalProject_26
 {
     public partial class Form2 : Form
     {
+        public string UserName { get; set; }
+        public string UserSurname { get; set; }
+        public string UserEmail { get; set; }
+        public string UserPhoneNumber { get; set; }
+
 
         string conString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\restaurant_service.mdf;Integrated Security=True";
         public SqlDataAdapter adapter;
@@ -59,15 +64,12 @@ namespace Restaurant_Reservation_System_FinalProject_26
                         string sqlQuery = $"SELECT * FROM User_account WHERE email = '{enteredEmail}' AND password = '{enteredPassword}'";
                         SqlCommand sqlCommand = new SqlCommand(sqlQuery, con);
                         con.Close();
-
                         con.Open();
                         string userInfoQuery = $"SELECT name, surname, email, phone_number FROM User_account WHERE email = '{enteredEmail}' AND password = '{enteredPassword}'";
-
                         using (SqlCommand cmd = new SqlCommand(userInfoQuery, con))
                         {
                             cmd.Parameters.AddWithValue("@email", enteredEmail);
                             cmd.Parameters.AddWithValue("@password", enteredPassword);
-
                             using (SqlDataReader reader = cmd.ExecuteReader())
                             {
                                 if (reader.Read())
@@ -77,12 +79,18 @@ namespace Restaurant_Reservation_System_FinalProject_26
                                     string surname = reader["surname"].ToString();
                                     string email = reader["email"].ToString();
                                     string phone_number = reader["phone_number"].ToString();
-
                                     // Valid login, do something here (e.g., open a new form)
                                     MessageBox.Show("Login successful!");
-
                                     // Pass the user details to the other forms
+                                    UserName = name;
+                                    UserSurname = surname;
+                                    UserEmail = email;
+                                    UserPhoneNumber = phone_number;
                                     Form4 frm4 = new Form4(name, surname);
+                                    frm4.UserName = name;
+                                    frm4.UserSurname = surname;
+                                    frm4.UserEmail = email;
+                                    frm4.UserPhoneNumber = phone_number;
                                     Form5 frm5 = new Form5(name, surname, email, phone_number);
                                     Form6 frm6 = new Form6(name, surname, email, phone_number);
                                     Form7 frm7 = new Form7(name, surname, email, phone_number);
@@ -113,15 +121,12 @@ namespace Restaurant_Reservation_System_FinalProject_26
                 errorProvider1.SetError(txtUserPhoneEmailLogin, "Please enter a valid email address");
             }
         }
-
         private void btnAdminLogin_Click(object sender, EventArgs e)
         {
             errorProvider1.SetError(txtAdminID, "");
             errorProvider2.SetError(txtAdminPass, "");
-
             string entered_ID = txtAdminID.Text;
             string enteredPword = txtAdminPass.Text;
-
             if (txtAdminID.Text != string.Empty)
             {
                 if (txtAdminPass.Text != string.Empty)
@@ -166,9 +171,7 @@ namespace Restaurant_Reservation_System_FinalProject_26
                 txtAdminID.Text = "";
                 errorProvider1.SetError(txtAdminID, "Please enter a valid email address");
             }
-
         }
-        
         private void btnSignUp_Click(object sender, EventArgs e)
         {
             using (SqlConnection con = new SqlConnection(conString))
@@ -183,29 +186,19 @@ namespace Restaurant_Reservation_System_FinalProject_26
                     string phone = txtSignCellno.Text;
                     string pass = txtSignCrPass.Text;
                     string pword = txtSignConPass.Text;
-
                     if (pass == pword)
                     {
                         string commandQuery = $"INSERT INTO User_account (name, surname, email, phone_number, password)  VALUES ('{fname}', '{lname}', '{email}', '{phone}','{pword}')";
-
                         cnn = new SqlConnection(conString);
                         cnn.Open();
-
                         string query = @"Select user_id FROM User_account";
                         cmd = new SqlCommand(query, cnn);
                         adapter = new SqlDataAdapter(cmd);
                         ds = new DataSet();
-
                         adapter.Fill(ds, "User_account");
-
-
-
                         using (SqlCommand sqlCommand = new SqlCommand(commandQuery, con))
                         {
-
-
                             int rowsAffected = sqlCommand.ExecuteNonQuery();
-
                             if (rowsAffected > 0)
                             {
                                 MessageBox.Show("Account Created Successfully.");
@@ -230,12 +223,10 @@ namespace Restaurant_Reservation_System_FinalProject_26
             }
         }
 
-
         private void txtSignConPass_TextChanged(object sender, EventArgs e)
         {
             txtSignCrPass.PasswordChar = '*';
         }
-
         private void txtUserLoginPass_TextChanged(object sender, EventArgs e)
         {
             txtUserLoginPass.PasswordChar = '*';

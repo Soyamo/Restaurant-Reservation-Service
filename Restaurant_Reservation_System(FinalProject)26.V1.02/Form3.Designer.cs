@@ -53,6 +53,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnDeleteUserDetails = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.useridDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.surnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.emailDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.phonenumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.passwordDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.txtResAddress_Admin = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -109,12 +115,6 @@
             this.menuItemsTableAdapter = new Restaurant_Reservation_System_FinalProject_26.restaurant_serviceDataSet2TableAdapters.MenuItemsTableAdapter();
             this.user_accountTableAdapter = new Restaurant_Reservation_System_FinalProject_26.restaurant_serviceDataSet3TableAdapters.User_accountTableAdapter();
             this.reservationsTableAdapter = new Restaurant_Reservation_System_FinalProject_26.restaurant_serviceDataSet4TableAdapters.ReservationsTableAdapter();
-            this.useridDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.surnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.emailDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.phonenumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.passwordDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.useraccountBindingSource)).BeginInit();
@@ -270,6 +270,7 @@
             this.btnDeleteAllUsers.TabIndex = 8;
             this.btnDeleteAllUsers.Text = "Delete All";
             this.btnDeleteAllUsers.UseVisualStyleBackColor = false;
+            this.btnDeleteAllUsers.Click += new System.EventHandler(this.btnDeleteAllUsers_Click);
             // 
             // btnUpdateUserDetails
             // 
@@ -283,6 +284,7 @@
             this.btnUpdateUserDetails.TabIndex = 7;
             this.btnUpdateUserDetails.Text = "Update User Details";
             this.btnUpdateUserDetails.UseVisualStyleBackColor = false;
+            this.btnUpdateUserDetails.Click += new System.EventHandler(this.btnUpdateUserDetails_Click);
             // 
             // btnAddUserDetails
             // 
@@ -296,6 +298,7 @@
             this.btnAddUserDetails.TabIndex = 6;
             this.btnAddUserDetails.Text = "Add new User Details";
             this.btnAddUserDetails.UseVisualStyleBackColor = false;
+            this.btnAddUserDetails.Click += new System.EventHandler(this.btnAddUserDetails_Click);
             // 
             // btnAdminLogOff
             // 
@@ -361,6 +364,7 @@
             this.btnDeleteUserDetails.TabIndex = 1;
             this.btnDeleteUserDetails.Text = "Delete User Details";
             this.btnDeleteUserDetails.UseVisualStyleBackColor = false;
+            this.btnDeleteUserDetails.Click += new System.EventHandler(this.btnDeleteUserDetails_Click);
             // 
             // dataGridView1
             // 
@@ -378,6 +382,44 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(832, 393);
             this.dataGridView1.TabIndex = 0;
+            // 
+            // useridDataGridViewTextBoxColumn
+            // 
+            this.useridDataGridViewTextBoxColumn.DataPropertyName = "user_id";
+            this.useridDataGridViewTextBoxColumn.HeaderText = "user_id";
+            this.useridDataGridViewTextBoxColumn.Name = "useridDataGridViewTextBoxColumn";
+            this.useridDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // nameDataGridViewTextBoxColumn1
+            // 
+            this.nameDataGridViewTextBoxColumn1.DataPropertyName = "name";
+            this.nameDataGridViewTextBoxColumn1.HeaderText = "name";
+            this.nameDataGridViewTextBoxColumn1.Name = "nameDataGridViewTextBoxColumn1";
+            // 
+            // surnameDataGridViewTextBoxColumn
+            // 
+            this.surnameDataGridViewTextBoxColumn.DataPropertyName = "surname";
+            this.surnameDataGridViewTextBoxColumn.HeaderText = "surname";
+            this.surnameDataGridViewTextBoxColumn.Name = "surnameDataGridViewTextBoxColumn";
+            // 
+            // emailDataGridViewTextBoxColumn
+            // 
+            this.emailDataGridViewTextBoxColumn.DataPropertyName = "email";
+            this.emailDataGridViewTextBoxColumn.HeaderText = "email";
+            this.emailDataGridViewTextBoxColumn.Name = "emailDataGridViewTextBoxColumn";
+            // 
+            // phonenumberDataGridViewTextBoxColumn
+            // 
+            this.phonenumberDataGridViewTextBoxColumn.DataPropertyName = "phone_number";
+            this.phonenumberDataGridViewTextBoxColumn.HeaderText = "phone_number";
+            this.phonenumberDataGridViewTextBoxColumn.Name = "phonenumberDataGridViewTextBoxColumn";
+            // 
+            // passwordDataGridViewTextBoxColumn
+            // 
+            this.passwordDataGridViewTextBoxColumn.DataPropertyName = "password";
+            this.passwordDataGridViewTextBoxColumn.HeaderText = "password";
+            this.passwordDataGridViewTextBoxColumn.Name = "passwordDataGridViewTextBoxColumn";
+            this.passwordDataGridViewTextBoxColumn.Visible = false;
             // 
             // tabPage2
             // 
@@ -758,7 +800,6 @@
             this.cbRSVPfilter.Name = "cbRSVPfilter";
             this.cbRSVPfilter.Size = new System.Drawing.Size(164, 22);
             this.cbRSVPfilter.TabIndex = 22;
-            this.cbRSVPfilter.Text = "Please Customer ID";
             this.cbRSVPfilter.SelectedIndexChanged += new System.EventHandler(this.cbRSVPfilter_SelectedIndexChanged);
             // 
             // reservationsBindingSource
@@ -898,44 +939,6 @@
             // reservationsTableAdapter
             // 
             this.reservationsTableAdapter.ClearBeforeFill = true;
-            // 
-            // useridDataGridViewTextBoxColumn
-            // 
-            this.useridDataGridViewTextBoxColumn.DataPropertyName = "user_id";
-            this.useridDataGridViewTextBoxColumn.HeaderText = "user_id";
-            this.useridDataGridViewTextBoxColumn.Name = "useridDataGridViewTextBoxColumn";
-            this.useridDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // nameDataGridViewTextBoxColumn1
-            // 
-            this.nameDataGridViewTextBoxColumn1.DataPropertyName = "name";
-            this.nameDataGridViewTextBoxColumn1.HeaderText = "name";
-            this.nameDataGridViewTextBoxColumn1.Name = "nameDataGridViewTextBoxColumn1";
-            // 
-            // surnameDataGridViewTextBoxColumn
-            // 
-            this.surnameDataGridViewTextBoxColumn.DataPropertyName = "surname";
-            this.surnameDataGridViewTextBoxColumn.HeaderText = "surname";
-            this.surnameDataGridViewTextBoxColumn.Name = "surnameDataGridViewTextBoxColumn";
-            // 
-            // emailDataGridViewTextBoxColumn
-            // 
-            this.emailDataGridViewTextBoxColumn.DataPropertyName = "email";
-            this.emailDataGridViewTextBoxColumn.HeaderText = "email";
-            this.emailDataGridViewTextBoxColumn.Name = "emailDataGridViewTextBoxColumn";
-            // 
-            // phonenumberDataGridViewTextBoxColumn
-            // 
-            this.phonenumberDataGridViewTextBoxColumn.DataPropertyName = "phone_number";
-            this.phonenumberDataGridViewTextBoxColumn.HeaderText = "phone_number";
-            this.phonenumberDataGridViewTextBoxColumn.Name = "phonenumberDataGridViewTextBoxColumn";
-            // 
-            // passwordDataGridViewTextBoxColumn
-            // 
-            this.passwordDataGridViewTextBoxColumn.DataPropertyName = "password";
-            this.passwordDataGridViewTextBoxColumn.HeaderText = "password";
-            this.passwordDataGridViewTextBoxColumn.Name = "passwordDataGridViewTextBoxColumn";
-            this.passwordDataGridViewTextBoxColumn.Visible = false;
             // 
             // Form3
             // 

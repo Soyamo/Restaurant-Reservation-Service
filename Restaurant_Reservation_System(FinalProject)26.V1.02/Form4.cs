@@ -20,6 +20,11 @@ namespace Restaurant_Reservation_System_FinalProject_26
         DataSet ds;
         SqlCommand cmd;
 
+        public string UserName { get; set; }
+        public string UserSurname { get; set; }
+        public string UserEmail { get; set; }
+        public string UserPhoneNumber { get; set; }
+
         public Form4()
         {
             InitializeComponent();
@@ -30,19 +35,18 @@ namespace Restaurant_Reservation_System_FinalProject_26
             InitializeComponent();
             tabControl1.SelectedIndex = 0;
             lblHomeUserName.Text = name + " " + surname;
-           
         }
 
         private void pbRes1_Click(object sender, EventArgs e)
         {
-            Form5 Res1 = new Form5();
+            Form5 Res1 = new Form5(UserName, UserSurname, UserEmail, UserPhoneNumber);
             Res1.Show();
             this.Hide();
         }
 
         private void pbRes2_Click(object sender, EventArgs e)
         {
-            Form6 Res2 = new Form6();
+            Form6 Res2 = new Form6(UserName, UserSurname, UserEmail, UserPhoneNumber);
             Res2.Show();
             this.Hide();
         }
