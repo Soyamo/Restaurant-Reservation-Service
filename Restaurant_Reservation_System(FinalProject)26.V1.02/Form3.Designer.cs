@@ -50,8 +50,6 @@
             this.cbUserFilter = new System.Windows.Forms.ComboBox();
             this.useraccountBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.restaurant_serviceDataSet3 = new Restaurant_Reservation_System_FinalProject_26.restaurant_serviceDataSet3();
-            this.txtUserID_Admin = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.btnDeleteUserDetails = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.useridDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -67,11 +65,8 @@
             this.txtResDescr_Admin = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.txtResID_Admin = new System.Windows.Forms.TextBox();
             this.txtItemName_Admin = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.txtItemID_Admin = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.btnAdminLogOff2 = new System.Windows.Forms.Button();
             this.cbResFilter = new System.Windows.Forms.ComboBox();
             this.btnDeleteAllItem = new System.Windows.Forms.Button();
@@ -87,10 +82,16 @@
             this.menuItemsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.restaurant_serviceDataSet2 = new Restaurant_Reservation_System_FinalProject_26.restaurant_serviceDataSet2();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label17 = new System.Windows.Forms.Label();
+            this.txtRSVP_Price = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.datePicker = new System.Windows.Forms.DateTimePicker();
+            this.cBoxTime = new System.Windows.Forms.ComboBox();
             this.cbDeleteReserve = new System.Windows.Forms.CheckBox();
             this.label14 = new System.Windows.Forms.Label();
             this.txtNoGuestsAdmin = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
+            this.txtSpecReq = new System.Windows.Forms.TextBox();
             this.Lbl60 = new System.Windows.Forms.Label();
             this.txtEventType = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
@@ -120,12 +121,15 @@
             this.user_accountTableAdapter = new Restaurant_Reservation_System_FinalProject_26.restaurant_serviceDataSet3TableAdapters.User_accountTableAdapter();
             this.reservationsTableAdapter = new Restaurant_Reservation_System_FinalProject_26.restaurant_serviceDataSet4TableAdapters.ReservationsTableAdapter();
             this.reservationsTableAdapter1 = new Restaurant_Reservation_System_FinalProject_26.restaurant_serviceDataSet6TableAdapters.ReservationsTableAdapter();
-            this.cBoxTime = new System.Windows.Forms.ComboBox();
-            this.datePicker = new System.Windows.Forms.DateTimePicker();
-            this.label5 = new System.Windows.Forms.Label();
-            this.txtSpecReq = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.txtRSVP_Price = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtItemID_Admin = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtUserID_Admin = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.cBoxResID = new System.Windows.Forms.ComboBox();
+            this.cBoxRSVP_User_id = new System.Windows.Forms.ComboBox();
+            this.cBoxResID_Admin = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.useraccountBindingSource)).BeginInit();
@@ -317,7 +321,7 @@
             this.btnAddUserDetails.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAddUserDetails.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddUserDetails.ForeColor = System.Drawing.SystemColors.Info;
-            this.btnAddUserDetails.Location = new System.Drawing.Point(147, 414);
+            this.btnAddUserDetails.Location = new System.Drawing.Point(152, 414);
             this.btnAddUserDetails.Name = "btnAddUserDetails";
             this.btnAddUserDetails.Size = new System.Drawing.Size(88, 44);
             this.btnAddUserDetails.TabIndex = 6;
@@ -359,23 +363,6 @@
             // 
             this.restaurant_serviceDataSet3.DataSetName = "restaurant_serviceDataSet3";
             this.restaurant_serviceDataSet3.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // txtUserID_Admin
-            // 
-            this.txtUserID_Admin.Location = new System.Drawing.Point(998, 48);
-            this.txtUserID_Admin.Name = "txtUserID_Admin";
-            this.txtUserID_Admin.Size = new System.Drawing.Size(190, 22);
-            this.txtUserID_Admin.TabIndex = 3;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(862, 55);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(47, 15);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "User ID:";
             // 
             // btnDeleteUserDetails
             // 
@@ -449,13 +436,13 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.Silver;
+            this.tabPage2.Controls.Add(this.cBoxResID_Admin);
             this.tabPage2.Controls.Add(this.cbDeleteItem);
             this.tabPage2.Controls.Add(this.txtItemPrice_Admin);
             this.tabPage2.Controls.Add(this.label12);
             this.tabPage2.Controls.Add(this.txtResDescr_Admin);
             this.tabPage2.Controls.Add(this.label11);
             this.tabPage2.Controls.Add(this.label10);
-            this.tabPage2.Controls.Add(this.txtResID_Admin);
             this.tabPage2.Controls.Add(this.txtItemName_Admin);
             this.tabPage2.Controls.Add(this.label9);
             this.tabPage2.Controls.Add(this.txtItemID_Admin);
@@ -496,7 +483,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(887, 181);
+            this.label12.Location = new System.Drawing.Point(887, 188);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(82, 15);
             this.label12.TabIndex = 15;
@@ -529,13 +516,6 @@
             this.label10.TabIndex = 12;
             this.label10.Text = "Description:";
             // 
-            // txtResID_Admin
-            // 
-            this.txtResID_Admin.Location = new System.Drawing.Point(1028, 174);
-            this.txtResID_Admin.Name = "txtResID_Admin";
-            this.txtResID_Admin.Size = new System.Drawing.Size(160, 22);
-            this.txtResID_Admin.TabIndex = 11;
-            // 
             // txtItemName_Admin
             // 
             this.txtItemName_Admin.Location = new System.Drawing.Point(1028, 113);
@@ -552,23 +532,6 @@
             this.label9.Size = new System.Drawing.Size(67, 15);
             this.label9.TabIndex = 9;
             this.label9.Text = "Item Name:";
-            // 
-            // txtItemID_Admin
-            // 
-            this.txtItemID_Admin.Location = new System.Drawing.Point(1028, 58);
-            this.txtItemID_Admin.Name = "txtItemID_Admin";
-            this.txtItemID_Admin.Size = new System.Drawing.Size(160, 22);
-            this.txtItemID_Admin.TabIndex = 8;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(887, 60);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(47, 15);
-            this.label8.TabIndex = 7;
-            this.label8.Text = "Item ID:";
             // 
             // btnAdminLogOff2
             // 
@@ -710,6 +673,10 @@
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.Color.Silver;
+            this.tabPage3.Controls.Add(this.cBoxRSVP_User_id);
+            this.tabPage3.Controls.Add(this.cBoxResID);
+            this.tabPage3.Controls.Add(this.label19);
+            this.tabPage3.Controls.Add(this.label18);
             this.tabPage3.Controls.Add(this.label17);
             this.tabPage3.Controls.Add(this.txtRSVP_Price);
             this.tabPage3.Controls.Add(this.label5);
@@ -739,6 +706,113 @@
             this.tabPage3.Text = "Reservation Details";
             this.tabPage3.Click += new System.EventHandler(this.tabPage3_Click);
             // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.Location = new System.Drawing.Point(952, 344);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(65, 15);
+            this.label17.TabIndex = 42;
+            this.label17.Text = "RSVP Price:";
+            // 
+            // txtRSVP_Price
+            // 
+            this.txtRSVP_Price.Location = new System.Drawing.Point(1051, 337);
+            this.txtRSVP_Price.Name = "txtRSVP_Price";
+            this.txtRSVP_Price.Size = new System.Drawing.Size(195, 22);
+            this.txtRSVP_Price.TabIndex = 41;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(951, 307);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(88, 15);
+            this.label5.TabIndex = 40;
+            this.label5.Text = "Special Request";
+            // 
+            // datePicker
+            // 
+            this.datePicker.Location = new System.Drawing.Point(1051, 134);
+            this.datePicker.Name = "datePicker";
+            this.datePicker.Size = new System.Drawing.Size(195, 22);
+            this.datePicker.TabIndex = 39;
+            this.datePicker.Value = new System.DateTime(2024, 9, 29, 0, 0, 0, 0);
+            // 
+            // cBoxTime
+            // 
+            this.cBoxTime.FormatString = "T";
+            this.cBoxTime.FormattingEnabled = true;
+            this.cBoxTime.Items.AddRange(new object[] {
+            "08:00:00",
+            "",
+            "08:30:00",
+            "",
+            "09:00:00",
+            "",
+            "09:30:00",
+            "",
+            "10:00:00",
+            "",
+            "10:30:00",
+            "",
+            "11:00:00",
+            "",
+            "11:30:00",
+            "",
+            "12:00:00",
+            "",
+            "12:30:00",
+            "",
+            "13:00:00",
+            "",
+            "13:30:00",
+            "",
+            "14:00:00",
+            "",
+            "14:30:00",
+            "",
+            "15:00:00",
+            "",
+            "15:30:00",
+            "",
+            "16:00:00",
+            "",
+            "16:30:00",
+            "",
+            "17:00:00",
+            "",
+            "17:30:00",
+            "",
+            "18:00:00",
+            "",
+            "18:30:00",
+            "",
+            "19:00:00",
+            "",
+            "19:30:00",
+            "",
+            "20:00:00",
+            "",
+            "20:30:00",
+            "",
+            "21:00:00",
+            "",
+            "21:30:00",
+            "",
+            "22:00:00",
+            "",
+            "22:30:00",
+            "",
+            "23:00:00"});
+            this.cBoxTime.Location = new System.Drawing.Point(1051, 175);
+            this.cBoxTime.Name = "cBoxTime";
+            this.cBoxTime.Size = new System.Drawing.Size(194, 22);
+            this.cBoxTime.TabIndex = 38;
+            this.cBoxTime.Text = "Choose time to book:";
+            // 
             // cbDeleteReserve
             // 
             this.cbDeleteReserve.AutoSize = true;
@@ -753,7 +827,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(951, 151);
+            this.label14.Location = new System.Drawing.Point(951, 177);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(65, 15);
             this.label14.TabIndex = 36;
@@ -761,7 +835,7 @@
             // 
             // txtNoGuestsAdmin
             // 
-            this.txtNoGuestsAdmin.Location = new System.Drawing.Point(1051, 195);
+            this.txtNoGuestsAdmin.Location = new System.Drawing.Point(1050, 217);
             this.txtNoGuestsAdmin.Name = "txtNoGuestsAdmin";
             this.txtNoGuestsAdmin.Size = new System.Drawing.Size(195, 22);
             this.txtNoGuestsAdmin.TabIndex = 31;
@@ -770,17 +844,24 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(954, 202);
+            this.label13.Location = new System.Drawing.Point(953, 224);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(82, 15);
             this.label13.TabIndex = 34;
             this.label13.Text = "No. Of Guests:";
             // 
+            // txtSpecReq
+            // 
+            this.txtSpecReq.Location = new System.Drawing.Point(1051, 300);
+            this.txtSpecReq.Name = "txtSpecReq";
+            this.txtSpecReq.Size = new System.Drawing.Size(195, 22);
+            this.txtSpecReq.TabIndex = 29;
+            // 
             // Lbl60
             // 
             this.Lbl60.AutoSize = true;
             this.Lbl60.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Lbl60.Location = new System.Drawing.Point(954, 111);
+            this.Lbl60.Location = new System.Drawing.Point(954, 141);
             this.Lbl60.Name = "Lbl60";
             this.Lbl60.Size = new System.Drawing.Size(63, 15);
             this.Lbl60.TabIndex = 30;
@@ -788,7 +869,7 @@
             // 
             // txtEventType
             // 
-            this.txtEventType.Location = new System.Drawing.Point(1051, 240);
+            this.txtEventType.Location = new System.Drawing.Point(1051, 258);
             this.txtEventType.Name = "txtEventType";
             this.txtEventType.Size = new System.Drawing.Size(195, 22);
             this.txtEventType.TabIndex = 27;
@@ -797,7 +878,7 @@
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(953, 247);
+            this.label15.Location = new System.Drawing.Point(953, 265);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(67, 15);
             this.label15.TabIndex = 26;
@@ -805,7 +886,7 @@
             // 
             // txtRsvpID
             // 
-            this.txtRsvpID.Location = new System.Drawing.Point(1051, 64);
+            this.txtRsvpID.Location = new System.Drawing.Point(1051, 17);
             this.txtRsvpID.Name = "txtRsvpID";
             this.txtRsvpID.Size = new System.Drawing.Size(195, 22);
             this.txtRsvpID.TabIndex = 25;
@@ -814,7 +895,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(957, 71);
+            this.label16.Location = new System.Drawing.Point(957, 24);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(51, 15);
             this.label16.TabIndex = 24;
@@ -835,14 +916,15 @@
             // 
             // cbRSVPfilter
             // 
-            this.cbRSVPfilter.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.reservationsBindingSource, "reservation_id", true));
-            this.cbRSVPfilter.DataSource = this.reservationsBindingSource;
+            this.cbRSVPfilter.DataSource = this.reservationsBindingSource1;
             this.cbRSVPfilter.DisplayMember = "user_id";
             this.cbRSVPfilter.FormattingEnabled = true;
             this.cbRSVPfilter.Location = new System.Drawing.Point(694, 424);
             this.cbRSVPfilter.Name = "cbRSVPfilter";
             this.cbRSVPfilter.Size = new System.Drawing.Size(164, 22);
             this.cbRSVPfilter.TabIndex = 22;
+            this.cbRSVPfilter.Text = "Choose a User ID to filter:";
+            this.cbRSVPfilter.ValueMember = "user_id";
             this.cbRSVPfilter.SelectedIndexChanged += new System.EventHandler(this.cbRSVPfilter_SelectedIndexChanged);
             // 
             // reservationsBindingSource
@@ -922,7 +1004,7 @@
             this.specialrequestsDataGridViewTextBoxColumn,
             this.rsvp_price});
             this.dataGridView3.DataSource = this.reservationsBindingSource1;
-            this.dataGridView3.Location = new System.Drawing.Point(3, 12);
+            this.dataGridView3.Location = new System.Drawing.Point(3, 11);
             this.dataGridView3.Name = "dataGridView3";
             this.dataGridView3.Size = new System.Drawing.Size(945, 406);
             this.dataGridView3.TabIndex = 17;
@@ -1008,117 +1090,97 @@
             // 
             this.reservationsTableAdapter1.ClearBeforeFill = true;
             // 
-            // cBoxTime
+            // label8
             // 
-            this.cBoxTime.FormattingEnabled = true;
-            this.cBoxTime.Items.AddRange(new object[] {
-            "08:00:00",
-            "",
-            "08:30:00",
-            "",
-            "09:00:00",
-            "",
-            "09:30:00",
-            "",
-            "10:00:00",
-            "",
-            "10:30:00",
-            "",
-            "11:00:00",
-            "",
-            "11:30:00",
-            "",
-            "12:00:00",
-            "",
-            "12:30:00",
-            "",
-            "13:00:00",
-            "",
-            "13:30:00",
-            "",
-            "14:00:00",
-            "",
-            "14:30:00",
-            "",
-            "15:00:00",
-            "",
-            "15:30:00",
-            "",
-            "16:00:00",
-            "",
-            "16:30:00",
-            "",
-            "17:00:00",
-            "",
-            "17:30:00",
-            "",
-            "18:00:00",
-            "",
-            "18:30:00",
-            "",
-            "19:00:00",
-            "",
-            "19:30:00",
-            "",
-            "20:00:00",
-            "",
-            "20:30:00",
-            "",
-            "21:00:00",
-            "",
-            "21:30:00",
-            "",
-            "22:00:00",
-            "",
-            "22:30:00",
-            "",
-            "23:00:00"});
-            this.cBoxTime.Location = new System.Drawing.Point(1051, 149);
-            this.cBoxTime.Name = "cBoxTime";
-            this.cBoxTime.Size = new System.Drawing.Size(195, 22);
-            this.cBoxTime.TabIndex = 38;
-            this.cBoxTime.Text = "Choose time to book:";
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(887, 60);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(47, 15);
+            this.label8.TabIndex = 7;
+            this.label8.Text = "Item ID:";
             // 
-            // datePicker
+            // txtItemID_Admin
             // 
-            this.datePicker.Location = new System.Drawing.Point(1051, 104);
-            this.datePicker.Name = "datePicker";
-            this.datePicker.Size = new System.Drawing.Size(195, 22);
-            this.datePicker.TabIndex = 39;
+            this.txtItemID_Admin.Location = new System.Drawing.Point(1028, 58);
+            this.txtItemID_Admin.Name = "txtItemID_Admin";
+            this.txtItemID_Admin.Size = new System.Drawing.Size(160, 22);
+            this.txtItemID_Admin.TabIndex = 8;
             // 
-            // label5
+            // label1
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(957, 292);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(88, 15);
-            this.label5.TabIndex = 40;
-            this.label5.Text = "Special Request";
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(862, 55);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(47, 15);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "User ID:";
             // 
-            // txtSpecReq
+            // txtUserID_Admin
             // 
-            this.txtSpecReq.Location = new System.Drawing.Point(1051, 285);
-            this.txtSpecReq.Name = "txtSpecReq";
-            this.txtSpecReq.Size = new System.Drawing.Size(195, 22);
-            this.txtSpecReq.TabIndex = 29;
+            this.txtUserID_Admin.Location = new System.Drawing.Point(998, 48);
+            this.txtUserID_Admin.Name = "txtUserID_Admin";
+            this.txtUserID_Admin.Size = new System.Drawing.Size(190, 22);
+            this.txtUserID_Admin.TabIndex = 3;
             // 
-            // label17
+            // label18
             // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(957, 332);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(65, 15);
-            this.label17.TabIndex = 42;
-            this.label17.Text = "RSVP Price:";
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.Location = new System.Drawing.Point(960, 65);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(44, 15);
+            this.label18.TabIndex = 44;
+            this.label18.Text = "User ID";
             // 
-            // txtRSVP_Price
+            // label19
             // 
-            this.txtRSVP_Price.Location = new System.Drawing.Point(1051, 325);
-            this.txtRSVP_Price.Name = "txtRSVP_Price";
-            this.txtRSVP_Price.Size = new System.Drawing.Size(195, 22);
-            this.txtRSVP_Price.TabIndex = 41;
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.Location = new System.Drawing.Point(953, 103);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(77, 15);
+            this.label19.TabIndex = 46;
+            this.label19.Text = "Restaurant ID";
+            // 
+            // cBoxResID
+            // 
+            this.cBoxResID.FormattingEnabled = true;
+            this.cBoxResID.Items.AddRange(new object[] {
+            "2",
+            "4",
+            "5"});
+            this.cBoxResID.Location = new System.Drawing.Point(1051, 96);
+            this.cBoxResID.Name = "cBoxResID";
+            this.cBoxResID.Size = new System.Drawing.Size(194, 22);
+            this.cBoxResID.TabIndex = 47;
+            this.cBoxResID.Text = "Choose Restaurant ID:";
+            // 
+            // cBoxRSVP_User_id
+            // 
+            this.cBoxRSVP_User_id.DataSource = this.useraccountBindingSource;
+            this.cBoxRSVP_User_id.DisplayMember = "user_id";
+            this.cBoxRSVP_User_id.FormattingEnabled = true;
+            this.cBoxRSVP_User_id.Location = new System.Drawing.Point(1051, 58);
+            this.cBoxRSVP_User_id.Name = "cBoxRSVP_User_id";
+            this.cBoxRSVP_User_id.Size = new System.Drawing.Size(195, 22);
+            this.cBoxRSVP_User_id.TabIndex = 48;
+            this.cBoxRSVP_User_id.Text = "Choose a user id:";
+            this.cBoxRSVP_User_id.ValueMember = "user_id";
+            // 
+            // cBoxResID_Admin
+            // 
+            this.cBoxResID_Admin.FormattingEnabled = true;
+            this.cBoxResID_Admin.Items.AddRange(new object[] {
+            "2",
+            "4",
+            "5"});
+            this.cBoxResID_Admin.Location = new System.Drawing.Point(1028, 181);
+            this.cBoxResID_Admin.Name = "cBoxResID_Admin";
+            this.cBoxResID_Admin.Size = new System.Drawing.Size(160, 22);
+            this.cBoxResID_Admin.TabIndex = 48;
+            this.cBoxResID_Admin.Text = "Choose Restaurant ID:";
             // 
             // Form3
             // 
@@ -1159,8 +1221,6 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ComboBox cbUserFilter;
-        private System.Windows.Forms.TextBox txtUserID_Admin;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnDeleteUserDetails;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btnDeleteAllUsers;
@@ -1185,12 +1245,9 @@
         private System.Windows.Forms.Button btnDeleteAllItem;
         private System.Windows.Forms.Button btnDeleteItem;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox txtItemID_Admin;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtResDescr_Admin;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox txtResID_Admin;
         private System.Windows.Forms.TextBox txtItemName_Admin;
         private System.Windows.Forms.TextBox txtItemPrice_Admin;
         private System.Windows.Forms.Label label12;
@@ -1251,5 +1308,14 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TextBox txtRSVP_Price;
         private System.Windows.Forms.TextBox txtSpecReq;
+        private System.Windows.Forms.TextBox txtUserID_Admin;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtItemID_Admin;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.ComboBox cBoxResID;
+        private System.Windows.Forms.ComboBox cBoxRSVP_User_id;
+        private System.Windows.Forms.ComboBox cBoxResID_Admin;
     }
 }

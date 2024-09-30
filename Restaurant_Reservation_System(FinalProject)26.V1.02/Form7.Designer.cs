@@ -31,6 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form7));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.cbRequest_Asoka = new System.Windows.Forms.ComboBox();
+            this.numericUpDown1_Asoka = new System.Windows.Forms.NumericUpDown();
+            this.cd_Asoka = new System.Windows.Forms.MonthCalendar();
             this.cbTime_Asoka = new System.Windows.Forms.ComboBox();
             this.label20 = new System.Windows.Forms.Label();
             this.lblNoOfSeats_Asoka = new System.Windows.Forms.Label();
@@ -148,11 +151,11 @@
             this.btnReview_Asoka = new System.Windows.Forms.Button();
             this.lbReview_Asoka = new System.Windows.Forms.ListBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.cd_Asoka = new System.Windows.Forms.MonthCalendar();
-            this.numericUpDown1_Asoka = new System.Windows.Forms.NumericUpDown();
-            this.cbRequest_Asoka = new System.Windows.Forms.ComboBox();
+            this.lbAsokaHistory = new System.Windows.Forms.ListBox();
+            this.BtnSeeHst = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1_Asoka)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.tabControl2.SuspendLayout();
@@ -182,7 +185,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbAsoka)).BeginInit();
             this.tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1_Asoka)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -236,18 +238,124 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Reserving";
             // 
+            // cbRequest_Asoka
+            // 
+            this.cbRequest_Asoka.FormattingEnabled = true;
+            this.cbRequest_Asoka.Items.AddRange(new object[] {
+            "Choose special request",
+            "",
+            "Photo booth",
+            "",
+            "Champagne",
+            "",
+            "Games setup",
+            "",
+            "Roses on tables",
+            "",
+            "Special menu",
+            "",
+            "Special seating",
+            "",
+            "Special cake",
+            "",
+            "DJ setup",
+            "",
+            "Custom decorations",
+            "",
+            "Special menu",
+            "",
+            "Customized cake",
+            "",
+            "Live band",
+            "",
+            "Silent auction"});
+            this.cbRequest_Asoka.Location = new System.Drawing.Point(746, 246);
+            this.cbRequest_Asoka.Name = "cbRequest_Asoka";
+            this.cbRequest_Asoka.Size = new System.Drawing.Size(196, 22);
+            this.cbRequest_Asoka.TabIndex = 58;
+            // 
+            // numericUpDown1_Asoka
+            // 
+            this.numericUpDown1_Asoka.Location = new System.Drawing.Point(29, 337);
+            this.numericUpDown1_Asoka.Name = "numericUpDown1_Asoka";
+            this.numericUpDown1_Asoka.Size = new System.Drawing.Size(120, 22);
+            this.numericUpDown1_Asoka.TabIndex = 57;
+            this.numericUpDown1_Asoka.ValueChanged += new System.EventHandler(this.numericUpDown1_Asoka_ValueChanged);
+            // 
+            // cd_Asoka
+            // 
+            this.cd_Asoka.Location = new System.Drawing.Point(390, 215);
+            this.cd_Asoka.Name = "cd_Asoka";
+            this.cd_Asoka.TabIndex = 56;
+            // 
             // cbTime_Asoka
             // 
             this.cbTime_Asoka.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.cbTime_Asoka.FormatString = "T";
             this.cbTime_Asoka.FormattingEnabled = true;
             this.cbTime_Asoka.Items.AddRange(new object[] {
             "Choose time to book:",
-            "09:00 pm",
-            "11:00 pm",
-            "13:00 pm",
-            "15:00 pm",
-            "18:00 pm",
-            "21:00 pm"});
+            "08:00:00",
+            "",
+            "08:30:00",
+            "",
+            "09:00:00",
+            "",
+            "09:30:00",
+            "",
+            "10:00:00",
+            "",
+            "10:30:00",
+            "",
+            "11:00:00",
+            "",
+            "11:30:00",
+            "",
+            "12:00:00",
+            "",
+            "12:30:00",
+            "",
+            "13:00:00",
+            "",
+            "13:30:00",
+            "",
+            "14:00:00",
+            "",
+            "14:30:00",
+            "",
+            "15:00:00",
+            "",
+            "15:30:00",
+            "",
+            "16:00:00",
+            "",
+            "16:30:00",
+            "",
+            "17:00:00",
+            "",
+            "17:30:00",
+            "",
+            "18:00:00",
+            "",
+            "18:30:00",
+            "",
+            "19:00:00",
+            "",
+            "19:30:00",
+            "",
+            "20:00:00",
+            "",
+            "20:30:00",
+            "",
+            "21:00:00",
+            "",
+            "21:30:00",
+            "",
+            "22:00:00",
+            "",
+            "22:30:00",
+            "",
+            "23:00:00"});
             this.cbTime_Asoka.Location = new System.Drawing.Point(193, 336);
             this.cbTime_Asoka.Name = "cbTime_Asoka";
             this.cbTime_Asoka.Size = new System.Drawing.Size(121, 22);
@@ -330,13 +438,21 @@
             this.cbReserveType_Asoka.FormattingEnabled = true;
             this.cbReserveType_Asoka.Items.AddRange(new object[] {
             "Choose reservation type...",
-            "Normal Sit-down",
-            "Graduation Party",
-            "Baby Shower",
-            "Engagement Party",
-            "Bridal Shower",
-            "Retirement Party",
-            "Charity Event"});
+            "Graduation Party ",
+            "",
+            "Bridal Shower ",
+            " ",
+            "Engagement Party ",
+            "",
+            "Retirement Party ",
+            "",
+            "Baby Shower ",
+            "",
+            "Retirement Party ",
+            "",
+            "Normal Sit-down  ",
+            "",
+            "Charity Event "});
             this.cbReserveType_Asoka.Location = new System.Drawing.Point(746, 126);
             this.cbReserveType_Asoka.Name = "cbReserveType_Asoka";
             this.cbReserveType_Asoka.Size = new System.Drawing.Size(196, 22);
@@ -1501,6 +1617,8 @@
             this.tabPage5.BackColor = System.Drawing.Color.Silver;
             this.tabPage5.BackgroundImage = global::Restaurant_Reservation_System_FinalProject_26.Properties.Resources.Asoka2;
             this.tabPage5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.tabPage5.Controls.Add(this.lbAsokaHistory);
+            this.tabPage5.Controls.Add(this.BtnSeeHst);
             this.tabPage5.Controls.Add(this.label18);
             this.tabPage5.Controls.Add(this.rtxtReview_Asoka);
             this.tabPage5.Controls.Add(this.btnReview_Asoka);
@@ -1550,7 +1668,7 @@
             this.lbReview_Asoka.ItemHeight = 14;
             this.lbReview_Asoka.Location = new System.Drawing.Point(382, 14);
             this.lbReview_Asoka.Name = "lbReview_Asoka";
-            this.lbReview_Asoka.Size = new System.Drawing.Size(632, 270);
+            this.lbReview_Asoka.Size = new System.Drawing.Size(413, 270);
             this.lbReview_Asoka.TabIndex = 6;
             // 
             // pictureBox5
@@ -1563,27 +1681,25 @@
             this.pictureBox5.TabIndex = 5;
             this.pictureBox5.TabStop = false;
             // 
-            // cd_Asoka
+            // lbAsokaHistory
             // 
-            this.cd_Asoka.Location = new System.Drawing.Point(390, 215);
-            this.cd_Asoka.Name = "cd_Asoka";
-            this.cd_Asoka.TabIndex = 56;
+            this.lbAsokaHistory.FormattingEnabled = true;
+            this.lbAsokaHistory.ItemHeight = 14;
+            this.lbAsokaHistory.Location = new System.Drawing.Point(819, 14);
+            this.lbAsokaHistory.Name = "lbAsokaHistory";
+            this.lbAsokaHistory.Size = new System.Drawing.Size(375, 270);
+            this.lbAsokaHistory.TabIndex = 16;
             // 
-            // numericUpDown1_Asoka
+            // BtnSeeHst
             // 
-            this.numericUpDown1_Asoka.Location = new System.Drawing.Point(29, 337);
-            this.numericUpDown1_Asoka.Name = "numericUpDown1_Asoka";
-            this.numericUpDown1_Asoka.Size = new System.Drawing.Size(120, 22);
-            this.numericUpDown1_Asoka.TabIndex = 57;
-            this.numericUpDown1_Asoka.ValueChanged += new System.EventHandler(this.numericUpDown1_Asoka_ValueChanged);
-            // 
-            // cbRequest_Asoka
-            // 
-            this.cbRequest_Asoka.FormattingEnabled = true;
-            this.cbRequest_Asoka.Location = new System.Drawing.Point(746, 246);
-            this.cbRequest_Asoka.Name = "cbRequest_Asoka";
-            this.cbRequest_Asoka.Size = new System.Drawing.Size(196, 22);
-            this.cbRequest_Asoka.TabIndex = 58;
+            this.BtnSeeHst.BackColor = System.Drawing.Color.Gray;
+            this.BtnSeeHst.Location = new System.Drawing.Point(1075, 309);
+            this.BtnSeeHst.Name = "BtnSeeHst";
+            this.BtnSeeHst.Size = new System.Drawing.Size(75, 23);
+            this.BtnSeeHst.TabIndex = 15;
+            this.BtnSeeHst.Text = "See History";
+            this.BtnSeeHst.UseVisualStyleBackColor = false;
+            this.BtnSeeHst.Click += new System.EventHandler(this.BtnSeeHst_Click);
             // 
             // Form7
             // 
@@ -1599,6 +1715,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1_Asoka)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
@@ -1639,7 +1756,6 @@
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1_Asoka)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1768,5 +1884,7 @@
         private System.Windows.Forms.NumericUpDown numericUpDown1_Asoka;
         private System.Windows.Forms.MonthCalendar cd_Asoka;
         private System.Windows.Forms.ComboBox cbRequest_Asoka;
+        private System.Windows.Forms.ListBox lbAsokaHistory;
+        private System.Windows.Forms.Button BtnSeeHst;
     }
 }

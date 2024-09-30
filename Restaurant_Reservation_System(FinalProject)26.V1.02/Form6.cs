@@ -64,6 +64,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
             txtEmail_Pace.Text = email;
             txtPhone_Pace.Text = phone_number;
 
+            txtcrdholder_Pace.Text = name + " " + surname;
+
             using (cnn = new SqlConnection(conString))
             {
                 try
@@ -116,6 +118,15 @@ namespace Restaurant_Reservation_System_FinalProject_26
                     }
                 }
             }
+
+
+
+
+
+
+
+
+
         }
         //==============================================================================
         //(Pace Buttons that allow to movement from one page to another)
@@ -127,61 +138,150 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
              reservationType = cbReserveType_Pace.SelectedItem.ToString();
                 
-                string query = "SELECT rsvp_price FROM Reservations WHERE reservation_type = @Reservation_type";
+            string query = "SELECT rsvp_price FROM Reservations WHERE reservation_type = @Reservation_type";
+            string queryUserId = "SELECT user_id FROM Use_details WHERE email = @UserEmail";
 
-                using (SqlConnection connection = new SqlConnection(conString))
+
+            using (SqlConnection connection = new SqlConnection(conString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Reservation_type", reservationType);
+
+                connection.Open();
+                object result = command.ExecuteScalar();
+
+                if (result != null)
                 {
-                    SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@Reservation_type", reservationType);
+                    reservationPrice = Convert.ToDecimal(result); // Save the price
 
-                    connection.Open();
-                    object result = command.ExecuteScalar();
-
-                    if (result != null)
-                    {
-                        reservationPrice = Convert.ToDecimal(result); // Save the price
-                        
-                    }
-                    else
-                    {
-                        MessageBox.Show($"No price found for {reservationType}.");
-                    }
-                
                 }
+                else
+                {
+                    MessageBox.Show($"No price found for {reservationType}.");
+                }
+                connection.Close();
 
-            //string query2 = "SELECT rsvp_price FROM Reservations WHERE reservation_type = @Reservation_type";
+                connection.Open();
+                SqlCommand commandUserId = new SqlCommand(queryUserId, connection);
+                commandUserId.Parameters.AddWithValue("@UserEmail", txtEmail_Pace.Text); // Assuming there's a textbox for email.
+                int user_id;
+                object userIdResult = commandUserId.ExecuteScalar();
+                if (userIdResult != null)
+                {
+                    user_id = Convert.ToInt32(userIdResult); // Save the user_id
+                }
+                else
+                {
+                    MessageBox.Show($"No user found with the email {txtEmail_Pace.Text}.");
+                    return;
+                }
+                connection.Close();
 
+                
 
-            tabControl1.SelectedTab = tabPage3;
+                try
+                {
+                    // Get the date from DatePicker (already a DateTime object)
+                    DateTime reservationDate = cd_Pace.SelectionStart;
 
-            //// Choose reservation type...
-            ////Normal Sit-down
-            ////Charity Event
-            ////Retirement Party
-            ////Engagement Party
-            ////Wedding Reception
-            ////Corporate Event
-            ////Birthday Celebration
+                    TimeSpan reservationTimeSpan;
+                    if (TimeSpan.TryParse(cbTime_Pace.Text, out reservationTimeSpan))
+                    {
+                        DateTime reservationDateTime = reservationDate.Date + reservationTimeSpan;
+                        string sql = "INSERT INTO Reservations (user_id, restaurant_id, reservation_date, reservation_time, number_of_people, reservation_type, special_requests, rsvp_price) VALUES (@RSVP_UserID, RSVP_ResID, @RSVP_date, @RSVP_Time, @No_Of_Guests, @Event_Type, @Special_req, @RSVP_Price)";
+                        using (SqlConnection cnn = new SqlConnection(conString))
+                        {
+                            using (SqlCommand cmd = new SqlCommand(sql, cnn))
+                            {
+                                decimal numeric = numericUpDown1_Pace.Value;
 
+                                cmd.Parameters.AddWithValue("@RSVP_UserID", user_id);
+                                cmd.Parameters.AddWithValue("@RSVP_ResID", 4);
+                                cmd.Parameters.AddWithValue("@RSVP_date", reservationDate);
+                                cmd.Parameters.AddWithValue("@RSVP_Time", reservationDateTime);
+                                cmd.Parameters.AddWithValue("@No_Of_Guests", numeric);
+                                cmd.Parameters.AddWithValue("@Event_Type", cbReserveType_Pace.Text);
+                                cmd.Parameters.AddWithValue("@Special_req", cbRequest_Pace.Text);
+                                cmd.Parameters.AddWithValue("@RSVP_Price", reservationPrice);
+                                cnn.Open();
+                                cmd.ExecuteNonQuery();
+                                cnn.Close();
+                                MessageBox.Show("Reservation Booked successfully!");
+                            }
+                        }
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show($"SQL Error: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred: {ex.Message}");
+                }
+            }
 
-            //Choose special request
-            //Flower arrangement
-            //Chocolate cake
-            //Live music
-            //Special menu
-            //Santa appearance
-            //Projector setup
-            //Balcony seating
-            //Outdoor setting
-            //Reserved area
-            //Seasonal menu
-            //Fireworks
-
-
+            
         }
         //2.(Payment of reservation and menu items)
         private void btnPay_Pace_Click(object sender, EventArgs e)
         {
+            string name = txtcrdholder_Pace.Text;
+            string cvv = txtCVV_Pace.Text;
+            string cardNumber = txtcrdNo_Pace.Text;
+            bool isValid = true;
+
+            // Validate cardholder's name
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                MessageBox.Show("Name cannot be empty.");
+                isValid = false;
+            }
+            else
+            {
+                foreach (char c in name)
+                {
+                    if (!char.IsLetter(c) && !char.IsWhiteSpace(c))
+                    {
+                        MessageBox.Show("Name can only contain letters and spaces.");
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+            // Validate CVV
+            if (isValid)
+            {
+                if (cvv.Length == 3 && int.TryParse(cvv, out _))
+                {
+                    // CVV is valid
+                }
+                else
+                {
+                    MessageBox.Show("Invalid CVV. Please enter exactly 3 digits.");
+                    isValid = false;
+                }
+            }
+            // Validate Card Number
+            if (isValid)
+            {
+                if (cardNumber.Length == 16 && long.TryParse(cardNumber, out _))
+                {
+                    // Card number is valid
+                }
+                else
+                {
+                    MessageBox.Show("Invalid Card Number. Please enter exactly 16 digits.");
+                    isValid = false;
+                }
+                SaveSummaryToFile();
+            }
+            // Proceed if all validations are successful
+            if (isValid)
+            {
+                MessageBox.Show("Transaction was successful!!!");
+                tabControl1.SelectedTab = tabPage5;
+            }
             using (SqlConnection cnn = new SqlConnection(conString))
             {
                 try
@@ -200,7 +300,7 @@ namespace Restaurant_Reservation_System_FinalProject_26
                             if (reader.Read())
                             {
                                 // Retrieve reservation details
-                                string name = reader["name"]?.ToString() ?? "Unknown";
+                                name = reader["name"]?.ToString() ?? "Unknown";
                                 int numPeople = reader["number_of_people"] != DBNull.Value ? Convert.ToInt32(reader["number_of_people"]) : 0;
                                 totalSeatsAvailable = numPeople;
 
@@ -1674,6 +1774,19 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
         }
 
+        private void SaveSummaryToFile()//
+        {
+            string filePath = "summary.txt"; // Update with your actual file path
+
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                foreach (var item in lbSummary_Pace.Items)
+                {
+                    writer.WriteLine(item.ToString());
+                }
+            }
+        }
+
         private void BtnSeeHst_Click(object sender, EventArgs e)
         {
             if (!lbPaceHistory.Visible)
@@ -1705,6 +1818,11 @@ namespace Restaurant_Reservation_System_FinalProject_26
                 // Hide the ListBox if it is already visible
                 lbPaceHistory.Visible = false;
             }
+        }
+
+        private void Form6_Load(object sender, EventArgs e)
+        {
+
         }
     }
     

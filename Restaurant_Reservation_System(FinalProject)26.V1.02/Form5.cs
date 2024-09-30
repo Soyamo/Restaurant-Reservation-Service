@@ -14,6 +14,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using System.Linq.Expressions;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
 
 namespace Restaurant_Reservation_System_FinalProject_26
 {
@@ -29,6 +30,12 @@ namespace Restaurant_Reservation_System_FinalProject_26
         private int restaurant_id;
         private int totalSeatsAvailable = 0;
         private int userId;
+        private string reservationType;
+        private decimal reservationPrice;
+        private decimal rsvpPrice;
+        private int seatsEntered;
+        private string email;
+
 
         public Form5()
         {
@@ -58,6 +65,9 @@ namespace Restaurant_Reservation_System_FinalProject_26
             LName_Vino.Text = surname;
             txtEmail_Vino.Text = email;
             txtPhone_Vino.Text = phone_number;
+
+            txtcrdholder_Vino.Text = name + " " + surname;
+
             numericUpDown_Vino.Value = 0;
 
             using (cnn = new SqlConnection(conString))
@@ -122,96 +132,91 @@ namespace Restaurant_Reservation_System_FinalProject_26
         //1.(Submit Reservation Details)
         private void btnSubmit_Vino_Click(object sender, EventArgs e)
         {
-            decimal rsvpCost, specialRequestCost = 0, menuItemCost = 0;
-            try
+            reservationType = cbReserveType_Vino.SelectedItem.ToString();
+
+            string query = "SELECT rsvp_price FROM Reservations WHERE reservation_type = @Reservation_type";
+            string queryUserId = "SELECT user_id FROM User_account WHERE email = @UserEmail";
+
+            using (SqlConnection connection = new SqlConnection(conString))
             {
-                using (var cnn = new SqlConnection(conString))
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Reservation_type", reservationType);
+
+                connection.Open();
+                object result = command.ExecuteScalar();
+
+                if (result != null)
                 {
-                    cnn.Open();
+                    reservationPrice = Convert.ToDecimal(result); // Save the price
 
-                    // Query to retrieve the user's ID from the database
-                    string selectQuery = "SELECT user_id FROM User_account WHERE email = @email";
-                    using (var selectCmd = new SqlCommand(selectQuery, cnn))
-                    {
-                        selectCmd.Parameters.AddWithValue("@email", txtEmail_Vino.Text);
-                        object result = selectCmd.ExecuteScalar();
-                        this.userId = result != null ? (int)result : throw new Exception("User not found.");
-                    }
-
-                    // Retrieve the rsvp_cost from the database
-                    string selectRsvpCostQuery = "SELECT rsvp_price FROM Reservations WHERE user_id = @user_id";
-                    using (var selectRsvpCostCmd = new SqlCommand(selectRsvpCostQuery, cnn))
-                    {
-                        selectRsvpCostCmd.Parameters.AddWithValue("@user_id", this.userId);
-                        object rsvpResult = selectRsvpCostCmd.ExecuteScalar();
-                        rsvpCost = rsvpResult != null ? (decimal)rsvpResult : throw new Exception("RSVP cost not found.");
-                    }
-
-                    // Retrieve the number of people from the database
-                    string selectNumPeopleQuery = "SELECT number_of_people FROM Reservations WHERE user_id = @user_id";
-                    using (var selectNumPeopleCmd = new SqlCommand(selectNumPeopleQuery, cnn))
-                    {
-                        selectNumPeopleCmd.Parameters.AddWithValue("@user_id", this.userId);
-                        object numPeopleResult = selectNumPeopleCmd.ExecuteScalar();
-                        int numPeople = numPeopleResult != null ? Convert.ToInt32(numPeopleResult) : 0;
-
-                        // Calculate the reservation cost
-                        decimal reservationCost = rsvpCost * numPeople;
-
-                        // Calculate special request cost
-                        var specialRequestCosts = new Dictionary<string, decimal>
+                }
+                else
                 {
-                    { "Projector required", 50 },
-                    { "Auction setup", 100 },
-                    { "Slide show", 20 },
-                    { "Outdoor seating", 30 },
-                    { "Private dining area", 40 },
-                    { "Red carpet entry", 60 },
-                    { "Balcony seating", 70 },
-                    { "Candlelight dinner", 80 },
-                    { "Private section", 90 }
-                };
+                    MessageBox.Show($"No price found for {reservationType}.");
+                }
+                connection.Close();
 
-                        if (cbRequests_Vino.SelectedItem != null &&
-                            specialRequestCosts.TryGetValue(cbRequests_Vino.SelectedItem.ToString(), out specialRequestCost))
-                        {
-                            // Cost found, use it
-                        }
+                connection.Open();
+                SqlCommand commandUserId = new SqlCommand(queryUserId, connection);
+                commandUserId.Parameters.AddWithValue("@UserEmail", txtEmail_Vino.Text); // Assuming there's a textbox for email.
+                int user_id;
+                object userIdResult = commandUserId.ExecuteScalar();
+                if (userIdResult != null)
+                {
+                    user_id = Convert.ToInt32(userIdResult); // Save the user_id
+                }
+                else
+                {
+                    MessageBox.Show($"No user found with the email {txtEmail_Vino.Text}.");
+                    return;
+                }
+                connection.Close();
 
-                        // Calculate menu item cost
-                        foreach (var item in lbOrder_Vino.Items)
+                try
+                {
+                    // Get the date from DatePicker (already a DateTime object)
+                    DateTime reservationDate = cd_vino.SelectionStart; 
+
+                    TimeSpan reservationTimeSpan;
+                    if (TimeSpan.TryParse(cbTime_Vino.Text, out reservationTimeSpan))
+                    {
+                        DateTime reservationDateTime = reservationDate.Date + reservationTimeSpan;
+                        string sql = "INSERT INTO Reservations (user_id, restaurant_id, reservation_date, reservation_time, number_of_people, reservation_type, special_requests, rsvp_price) VALUES (@RSVP_UserID, @RSVP_ResID, @RSVP_date, @RSVP_Time, @No_Of_Guests, @Event_Type, @Special_req, @RSVP_Price)";
+                        using (SqlConnection cnn = new SqlConnection(conString))
                         {
-                            string listItem = item.ToString();
-                            int dashIndex = listItem.IndexOf('-');
-                            if (dashIndex != -1)
+                            using (SqlCommand cmd = new SqlCommand(sql, cnn))
                             {
-                                string priceString = listItem.Substring(dashIndex + 1).Trim().Replace("$", "");
-                                if (decimal.TryParse(priceString, out decimal price))
-                                {
-                                    menuItemCost += price;
-                                }
+                                decimal numeric = numericUpDown_Vino.Value;
+
+                                cmd.Parameters.AddWithValue("@RSVP_UserID", user_id);
+                                cmd.Parameters.AddWithValue("@RSVP_ResID", 2);
+                                cmd.Parameters.AddWithValue("@RSVP_date", reservationDate);
+                                cmd.Parameters.AddWithValue("@RSVP_Time", reservationDateTime);
+                                cmd.Parameters.AddWithValue("@No_Of_Guests", numeric);
+                                cmd.Parameters.AddWithValue("@Event_Type", cbReserveType_Vino.Text);
+                                cmd.Parameters.AddWithValue("@Special_req", cbRequests_Vino.Text);
+                                cmd.Parameters.AddWithValue("@RSVP_Price", reservationPrice);
+                                cnn.Open();
+                                cmd.ExecuteNonQuery();
+                                cnn.Close();
+                                MessageBox.Show("Reservation Booked successfully!");
                             }
                         }
-
-                        tabControl1.SelectedTab = tabPage3;
-                        // Update the total cost
-                        UpdateTotal(reservationCost, specialRequestCost, menuItemCost);
-                        UpdateSummary(0, 0);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}");
-                // Consider logging the exception details here
-            }
-            finally
-            {
-                if (cnn != null && cnn.State == ConnectionState.Open)
+                catch (SqlException ex)
                 {
-                    cnn.Close();
+                    MessageBox.Show($"SQL Error: {ex.Message}");
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred: {ex.Message}");
+                }
+
             }
+            tabControl1.SelectedTab = tabPage3;
+
+            
         }
         //2.(Payment of reservation and menu items)
         private void btnPay_Vino_Click(object sender, EventArgs e)
@@ -271,6 +276,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
                 MessageBox.Show("Transaction was successful!!!");
                 tabControl1.SelectedTab = tabPage5;
             }
+            SaveSummaryToFile();
+
         }
         //3.(Back button)
         private void btnBackVino_Click(object sender, EventArgs e)
@@ -325,7 +332,6 @@ namespace Restaurant_Reservation_System_FinalProject_26
         //7.(Button that submits orders from the menu item)
         private void btnSubmitOrder_Vino_Click(object sender, EventArgs e)
         {
-            // Check if there are items in the order list
             if (lbOrder_Vino.Items.Count > 0)
             {
                 MessageBox.Show("Successfully submitted order!!!");
@@ -334,9 +340,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
                 lblSubTotal_Vino.Text = $"{totalPrice:F2}";
                 decimal taxPerc = 0.15m; // Use decimal for accurate financial calculations
                 decimal taxAmount = totalPrice * taxPerc; // Calculate the tax amount
-                decimal totalAmount = totalPrice + taxAmount; // Calculate the total amount including tax
+                decimal totalAmount = totalPrice + taxAmount + (reservationPrice * seatsEntered); // Calculate the total amount including tax
                 lblTotal_Vino.Text = $"{totalAmount:F2}";
-
                 // Navigate to tabPage4 to show confirmation message
                 tabControl1.SelectedTab = tabPage4;
             }
@@ -345,10 +350,8 @@ namespace Restaurant_Reservation_System_FinalProject_26
                 // Display a message if no items were selected
                 MessageBox.Show("No order item from menu!!!");
             }
-
-            // Always update and display the summary on tabPage6, even if no new items are selected
             tabControl2.SelectedTab = tabPage6;
-            UpdateSummary(0, 0); // Ensure the summary reflects the current order from all previous tabs
+            UpdateSummary();
         }
         //8.(Button that skips the menu section)
         private void btnSkip_Vino_Click(object sender, EventArgs e)
@@ -368,160 +371,151 @@ namespace Restaurant_Reservation_System_FinalProject_26
         //(Vino Santo Deserts)
         private void cbDesert1_Vino_CheckedChanged(object sender, EventArgs e)
         {
-            
+
             pbDeserts_Vino.Visible = true;
             pbDeserts_Vino.Image = Properties.Resources.CremeBrulee;
-            string dessertName = cbDesert1_Vino.Text;
+            String menu = cbDesert1_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", dessertName);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{dessertName} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
-                        // Add the product name and price to the list bo
+                        // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
         }
         private void cbDesert2_Vino_CheckedChanged(object sender, EventArgs e)
         {
-            String dessertName = cbDesert2_Vino.Text;
             pbDeserts_Vino.Visible = true;
             pbDeserts_Vino.Image = Properties.Resources.tiramisu;
-
+            String menu = cbDesert2_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", dessertName);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{dessertName} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
         }
         private void cbDesert3_Vino_CheckedChanged(object sender, EventArgs e)
         {
-            String dessertName = cbDesert3_Vino.Text;
             pbDeserts_Vino.Visible = true;
             pbDeserts_Vino.Image = Properties.Resources.Choc_Fondant;
-
+            String menu = cbDesert3_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", dessertName);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{dessertName} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
         }
         private void cbDesert4_Vino_CheckedChanged(object sender, EventArgs e)
         {
-            String dessertName = cbDesert4_Vino.Text;
             pbDeserts_Vino.Visible = true;
             pbDeserts_Vino.Image = Properties.Resources.PannaCotta;
-
+            String menu = cbDesert4_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", dessertName);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{dessertName} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
         }
         private void cbDesert5_Vino_CheckedChanged(object sender, EventArgs e)
         {
-            String dessertName = cbDesert5_Vino.Text;
             pbDeserts_Vino.Visible = true;
             pbDeserts_Vino.Image = Properties.Resources.cheesecake;
-
+            String menu = cbDesert5_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", dessertName);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{dessertName} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -529,159 +523,150 @@ namespace Restaurant_Reservation_System_FinalProject_26
         //(Vino Santo Appetizers(starters))
         private void cbStarter1_Vino_CheckedChanged(object sender, EventArgs e)
         {
-            String starter = cbStarter1_Vino.Text;
             pbAppetizers_Vino.Visible = true;
             pbAppetizers_Vino.Image = Properties.Resources.FoleGras;
-
+            String menu = cbStarter1_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", starter);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{starter} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
         }
         private void cbStarter2_Vino_CheckedChanged(object sender, EventArgs e)
         {
-            String starter = cbStarter2_Vino.Text;
             pbAppetizers_Vino.Visible = true;
             pbAppetizers_Vino.Image = Properties.Resources.OysterRcfeller;
-
+            String menu = cbStarter2_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", starter);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{starter} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
         }
         private void cbStarter3_Vino_CheckedChanged(object sender, EventArgs e)
         {
-            String starter = cbStarter3_Vino.Text;
             pbAppetizers_Vino.Visible = true;
             pbAppetizers_Vino.Image = Properties.Resources.tunatarare;
-
+            String menu = cbStarter3_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", starter);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{starter} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
-
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
         }
         private void cbStarter4_Vino_CheckedChanged(object sender, EventArgs e)
         {
-            String starter = cbStarter4_Vino.Text;
             pbAppetizers_Vino.Visible = true;
             pbAppetizers_Vino.Image = Properties.Resources.Escargot;
+            String menu = cbStarter4_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", starter);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{starter} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
         }
         private void cbStarter5_Vino_CheckedChanged(object sender, EventArgs e)
         {
-            String starter = cbStarter5_Vino.Text;
             pbAppetizers_Vino.Visible = true;
             pbAppetizers_Vino.Image = Properties.Resources.BeefCarpaccio;
+            String menu = cbStarter5_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", starter);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{starter} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -689,32 +674,30 @@ namespace Restaurant_Reservation_System_FinalProject_26
         //(Vino Santo Main Courses)
         private void cbMain1_Vino_CheckedChanged(object sender, EventArgs e)
         {
-            String Main = cbMain1_Vino.Text;
             pbMain_Vino.Visible = true;
             pbMain_Vino.Image = Properties.Resources.BeefCarpaccio;
-
+            String menu = cbMain1_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", Main);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{Main} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -723,29 +706,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbMain_Vino.Visible = true;
             pbMain_Vino.Image = Properties.Resources.DuckOrange;
-            String Main = cbMain2_Vino.Text;
+            String menu = cbMain2_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", Main);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{Main} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -754,29 +736,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbMain_Vino.Visible = true;
             pbMain_Vino.Image = Properties.Resources.LobsterThermidor;
-            String Main = cbMain3_Vino.Text;
+            String menu = cbMain3_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", Main);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{Main} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -785,29 +766,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbMain_Vino.Visible = true;
             pbMain_Vino.Image = Properties.Resources.LambRack;
-            String Main = cbMain4_Vino.Text;
+            String menu = cbMain4_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", Main);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{Main} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -816,29 +796,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbMain_Vino.Visible = true;
             pbMain_Vino.Image = Properties.Resources.Risotto;
-            String Main = cbMain5_Vino.Text;
+            String menu = cbMain5_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", Main);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{Main} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -847,28 +826,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbMain_Vino.Visible = true;
             pbMain_Vino.Image = Properties.Resources.SalmonCroute;
-            String Main = cbMain6_Vino.Text;
+            String menu = cbMain8_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", Main);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{Main} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -894,7 +873,6 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
                     }
                     else
                     {
@@ -907,28 +885,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbMain_Vino.Visible = true;
             pbMain_Vino.Image = Properties.Resources.BeefWelling;
-            String Main = cbMain8_Vino.Text;
+            String menu = cbMain8_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", Main);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{Main} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-                        UpdateTotal(0, 0, price);
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -951,7 +929,7 @@ namespace Restaurant_Reservation_System_FinalProject_26
                     int dashIndex = listItem.IndexOf('-');
                     if (dashIndex != -1)
                     {
-                        string priceString = listItem.Substring(dashIndex + 1).Trim().Replace("$", "");
+                        string priceString = listItem.Substring(dashIndex + 1).Trim().Replace("R", "");
                         if (decimal.TryParse(priceString, out decimal price))
                         {
                             totalDeduction += price; // Accumulate the amount to deduct
@@ -969,7 +947,7 @@ namespace Restaurant_Reservation_System_FinalProject_26
                 Console.WriteLine($"Total Deduction: {totalDeduction}");
 
                 // Recalculate the total price after item removal
-                UpdateTotal(0, 0, -totalDeduction);
+                UpdateTotal(-totalDeduction);
             }
             else
             {
@@ -1031,29 +1009,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbCocktails_Vino.Visible = true;
             pbCocktails_Vino.Image = Properties.Resources.Martini;
-            String cocktail = cbcocktail1_Vino.Text;
+            String menu = cbcocktail1_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", cocktail);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{cocktail} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1062,29 +1039,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbCocktails_Vino.Visible = true;
             pbCocktails_Vino.Image = Properties.Resources.Magarita;
-            String cocktail = cbcocktail2_Vino.Text;
+            String menu = cbcocktail2_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", cocktail);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{cocktail} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1093,29 +1069,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbCocktails_Vino.Visible = true;
             pbCocktails_Vino.Image = Properties.Resources.OldFash;
-            String cocktail = cbCocktail3_Vino.Text;
+            String menu = cbCocktail3_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", cocktail);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{cocktail} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1124,29 +1099,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbCocktails_Vino.Visible = true;
             pbCocktails_Vino.Image = Properties.Resources.Negori;
-            String cocktail = cbCocktail4_Vino.Text;
+            String menu = cbCocktail4_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", cocktail);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{cocktail} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1155,29 +1129,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbCocktails_Vino.Visible = true;
             pbCocktails_Vino.Image = Properties.Resources.Mojito;
-            String cocktail = cbCocktail5_Vino.Text;
+            String menu = cbCocktail5_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", cocktail);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{cocktail} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1187,29 +1160,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbWines_Vino.Visible = true;
             pbWines_Vino.Image = Properties.Resources.CarbSauv;
-            String wines = cbWine1_Vino.Text;
+            String menu = cbWine1_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", wines);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{wines} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1218,29 +1190,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbWines_Vino.Visible = true;
             pbWines_Vino.Image = Properties.Resources.Chardonnay;
-            String wines = cbWine2_Vino.Text;
+            String menu = cbWine2_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", wines);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{wines} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1249,29 +1220,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbWines_Vino.Visible = true;
             pbWines_Vino.Image = Properties.Resources.PinotNoir;
-            String wines = cbWine3_Vino.Text;
+            String menu = cbWine3_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", wines);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{wines} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1280,29 +1250,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbWines_Vino.Visible = true;
             pbWines_Vino.Image = Properties.Resources.SauvBlanc;
-            String wines = cbWine4_Vino.Text;
+            String menu = cbWine4_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", wines);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{wines} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1311,29 +1280,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbWines_Vino.Visible = true;
             pbWines_Vino.Image = Properties.Resources.Merlot;
-            String wines = cbWine5_Vino.Text;
+            String menu = cbWine5_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", wines);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{wines} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1343,29 +1311,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbNonBev_Vino.Visible = true;
             pbNonBev_Vino.Image = Properties.Resources.SparklingWater;
-            String NonBev = cbNonBev1_Vino.Text;
+            String menu = cbNonBev1_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", NonBev);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{NonBev} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1374,29 +1341,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbNonBev_Vino.Visible = true;
             pbNonBev_Vino.Image = Properties.Resources.OrangeJuice;
-            String NonBev = cbNonBev2_Vino.Text;
+            String menu = cbNonBev2_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", NonBev);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{NonBev} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1405,29 +1371,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbNonBev_Vino.Visible = true;
             pbNonBev_Vino.Image = Properties.Resources.IcedTea;
-            String NonBev = cbNonBev3_Vino.Text;
+            String menu = cbNonBev3_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", NonBev);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{NonBev} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1436,29 +1401,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbNonBev_Vino.Visible = true;
             pbNonBev_Vino.Image = Properties.Resources.MockTail;
-            String NonBev = cbNonBev4_Vino.Text;
+            String menu = cbNonBev4_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", NonBev);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{NonBev} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1467,29 +1431,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbNonBev_Vino.Visible = true;
             pbNonBev_Vino.Image = Properties.Resources.MangoJuice;
-            String NonBev = cbNonBev5_Vino.Text;
+            String menu = cbNonBev5_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", NonBev);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{NonBev} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1499,29 +1462,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbHotBev_Vino.Visible = true;
             pbHotBev_Vino.Image = Properties.Resources.Expresso;
-            String HotBev = cbHotBev1_Vino.Text;
+            String menu = cbHotBev1_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", HotBev);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{HotBev} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1530,29 +1492,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbHotBev_Vino.Visible = true;
             pbHotBev_Vino.Image = Properties.Resources.Cuppacino;
-            String HotBev = cbHotBev2_Vino.Text;
+            String menu = cbHotBev2_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", HotBev);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{HotBev} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1561,29 +1522,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbHotBev_Vino.Visible = true;
             pbHotBev_Vino.Image = Properties.Resources.Latte;
-            String HotBev = cbHotBev3_Vino.Text;
+            String menu = cbHotBev3_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", HotBev);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{HotBev} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1592,29 +1552,28 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbHotBev_Vino.Visible = true;
             pbHotBev_Vino.Image = Properties.Resources.BlackTea;
-            String HotBev = cbHotBev4_Vino.Text;
+            String menu = cbHotBev4_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", HotBev);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{HotBev} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
@@ -1623,36 +1582,32 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             pbHotBev_Vino.Visible = true;
             pbHotBev_Vino.Image = Properties.Resources.HerbalTea;
-            String HotBev = cbHotBev5_Vino.Text;
+            String menu = cbHotBev5_Vino.Text;
             using (SqlConnection conn = new SqlConnection(conString))
             {
                 string query = "SELECT price FROM MenuItems WHERE name = @name";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name", HotBev);
+                    cmd.Parameters.AddWithValue("@name", menu);
                     conn.Open();
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
                         decimal price = Convert.ToDecimal(result);
-                        string displayText = $"{HotBev} - ${price:F2}";
+                        string displayText = $"{menu} - R{price:F2}";
 
                         // Add the product name and price to the list box
-
                         lbOrder_Vino.Items.Add(displayText);
-
-                        CalculateCosts();
+                        UpdateTotal(price);
                     }
                     else
                     {
-                        MessageBox.Show("Dessert not found.");
+                        MessageBox.Show("Item not found.");
                     }
                 }
             }
         }
-
-
 
         private void cbReserveType_Vino_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1680,28 +1635,12 @@ namespace Restaurant_Reservation_System_FinalProject_26
             }
         }
 
-
-
         private void numericUpDown_Vino_ValueChanged(object sender, EventArgs e)
         {
-            // Calculate the remaining seats by subtracting the entered seats from the maximum available seats
-            int seatsEntered = (int)numericUpDown_Vino.Value;
+            seatsEntered = (int)numericUpDown_Vino.Value;
             int maxAvailableSeats = totalSeatsAvailable; // Consider using a more descriptive variable name
             int seatsLeft = maxAvailableSeats - seatsEntered;
 
-            // Input validation: Ensure the entered value is not negative and does not exceed the maximum available seats
-            if (seatsEntered < 0)
-            {
-                MessageBox.Show("Error: Please enter a non-negative value.");
-                numericUpDown_Vino.Value = 0;
-                return;
-            }
-            else if (seatsEntered > maxAvailableSeats)
-            {
-                MessageBox.Show("Error: Not enough seats available.");
-                numericUpDown_Vino.Value = maxAvailableSeats;
-                return;
-            }
 
             // Update the label dynamically
             if (seatsLeft >= 0)
@@ -1713,103 +1652,13 @@ namespace Restaurant_Reservation_System_FinalProject_26
                 // This condition should not occur due to the input validation above
                 lblNoOfSeats_Vino.Text = "Seats Left: Not enough seats available";
             }
-
-            CalculateCosts();
         }
 
-        private void CalculateCosts()
+        private void UpdateTotal(decimal price)
         {
-            decimal rsvpCost, specialRequestCost = 0, menuItemCost = 0;
-            try
-            {
-                using (var cnn = new SqlConnection(conString))
-                {
-                    cnn.Open();
+            totalPrice += price; // Increment the total pricelblTotalPrice.Text = $"Total: ${totalPrice:F2}"; // Optional: display the running total on the UI
 
-                    // Query to retrieve the user's ID from the database
-                    string selectQuery = "SELECT user_id FROM User_account WHERE email = @email";
-                    using (var selectCmd = new SqlCommand(selectQuery, cnn))
-                    {
-                        selectCmd.Parameters.AddWithValue("@email", txtEmail_Vino.Text);
-                        object result = selectCmd.ExecuteScalar();
-                        this.userId = result != null ? (int)result : throw new Exception("User not found.");
-                    }
-
-                    // Retrieve the RSVP price from the database
-                    string selectRsvpCostQuery = "SELECT rsvp_price FROM Reservations WHERE user_id = @user_id";
-                    using (var selectRsvpCostCmd = new SqlCommand(selectRsvpCostQuery, cnn))
-                    {
-                        selectRsvpCostCmd.Parameters.AddWithValue("@user_id", this.userId);
-                        object rsvpResult = selectRsvpCostCmd.ExecuteScalar();
-                        rsvpCost = rsvpResult != null ? (decimal)rsvpResult : throw new Exception("RSVP cost not found.");
-                    }
-
-                    // Retrieve the number of seats entered
-                    int seatsEntered = (int)numericUpDown_Vino.Value;
-
-                    // Calculate the reservation cost
-                    decimal reservationCost = rsvpCost * seatsEntered;
-
-                    // Calculate special request cost
-                    var specialRequestCosts = new Dictionary<string, decimal>
-                {
-                    { "Projector required", 50 },
-                    { "Auction setup", 100 },
-                    { "Slide show", 20 },
-                    { "Outdoor seating", 30 },
-                    { "Private dining area", 40 },
-                    { "Red carpet entry", 60 },
-                    { "Balcony seating", 70 },
-                    { "Candlelight dinner", 80 },
-                    { "Private section", 90 }
-                };
-
-                    if (cbRequests_Vino.SelectedItem != null &&
-                        specialRequestCosts.TryGetValue(cbRequests_Vino.SelectedItem.ToString(), out specialRequestCost))
-                    {
-                        // Cost found, use it
-                    }
-
-                    // Calculate menu item cost
-                    foreach (var item in lbOrder_Vino.Items)
-                    {
-                        string listItem = item.ToString();
-                        int dashIndex = listItem.IndexOf('-');
-                        if (dashIndex != -1)
-                        {
-                            string priceString = listItem.Substring(dashIndex + 1).Trim().Replace("$", "");
-                            if (decimal.TryParse(priceString, out decimal price))
-                            {
-                                menuItemCost += price;
-                            }
-                        }
-                    }
-
-                    tabControl1.SelectedTab = tabPage3;
-                    // Update the total cost
-                    UpdateTotal(reservationCost, specialRequestCost, menuItemCost);
-                    UpdateSummary(reservationCost, specialRequestCost);
-                }
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("Error :" + ex.Message);
-            }
-            
-        }
-
-
-
-        private void UpdateTotal(decimal reservationCost, decimal specialRequestCost, decimal menuItemCost)
-        {
-            // Recalculate the total price
-            totalPrice = reservationCost + specialRequestCost + menuItemCost;
-
-            // Debugging output to ensure correct values
-            Console.WriteLine($"Reservation Cost: {reservationCost}, Special Request Cost: {specialRequestCost}, Menu Item Cost: {menuItemCost}");
-            Console.WriteLine($"Total Price: {totalPrice}");
-
-            // Remove old "Total Price" entry if exists
+            // Clear previous total price entry if it exists
             for (int i = lbOrder_Vino.Items.Count - 1; i >= 0; i--)
             {
                 if (lbOrder_Vino.Items[i].ToString().StartsWith("Total Price:"))
@@ -1817,16 +1666,12 @@ namespace Restaurant_Reservation_System_FinalProject_26
                     lbOrder_Vino.Items.RemoveAt(i);
                 }
             }
+            // Create the total price display text
+            string totalDisplayText = $"Total Price: R{totalPrice:F2}";
 
-            // Add the updated total price
-            lbOrder_Vino.Items.Add($"Total Price: ${totalPrice:F2}");
-
-            // Update the summary
-            UpdateSummary(reservationCost, specialRequestCost);
+            // Add total price at the end of the list
+            lbOrder_Vino.Items.Add(totalDisplayText);
         }
-
-
-
 
 
         public struct ItemSummary
@@ -1834,79 +1679,98 @@ namespace Restaurant_Reservation_System_FinalProject_26
             public int Count;
             public decimal TotalPrice;
         }
-
-
-
-
-        private void UpdateSummary(decimal reservationCost, decimal specialRequestCost)
+        private void UpdateSummary()
         {
-            // Clear existing items in the summary
-            lbSummary_Vino.Items.Clear();
-
+            lbSummary_Vino.Items.Clear(); // Clear existing items in summary
             // Dictionary to hold item names and their summary data
             Dictionary<string, ItemSummary> itemCounts = new Dictionary<string, ItemSummary>();
-            decimal menuItemCost = 0; // Sum of menu item costs
-
             // Loop through items in lbOrder_Vino
             foreach (var item in lbOrder_Vino.Items)
             {
                 string listItem = item.ToString();
                 int dashIndex = listItem.IndexOf('-');
 
-                if (dashIndex != -1 && !listItem.StartsWith("Total Price:"))
+                if (dashIndex != -1)
                 {
                     // Extract item name and price
                     string itemName = listItem.Substring(0, dashIndex).Trim();
-                    string priceString = listItem.Substring(dashIndex + 1).Trim().Replace("$", "");
+                    string priceString = listItem.Substring(dashIndex + 1).Trim().Replace("R", "");
 
                     if (decimal.TryParse(priceString, out decimal price))
                     {
-                        menuItemCost += price; // Accumulate total menu item cost
-
                         // Count occurrences and sum prices
                         if (itemCounts.ContainsKey(itemName))
                         {
                             var currentSummary = itemCounts[itemName];
                             currentSummary.Count++;
                             currentSummary.TotalPrice += price;
-                            itemCounts[itemName] = currentSummary;
+                            itemCounts[itemName] = currentSummary; // Update the entry
                         }
                         else
                         {
-                            itemCounts[itemName] = new ItemSummary { Count = 1, TotalPrice = price };
+                            itemCounts[itemName] = new ItemSummary { Count = 1, TotalPrice = price }; // Initialize
                         }
                     }
                 }
             }
-
-            // Debugging output to verify menuItemCost
-            Console.WriteLine($"Menu Item Cost: {menuItemCost}");
-
             // Populate lbSummary_Vino with formatted items
             foreach (var kvp in itemCounts)
             {
-                string displayText = $"{kvp.Key} ({kvp.Value.Count}) - ${kvp.Value.TotalPrice:F2}";
-                lbSummary_Vino.Items.Add(displayText);
+                string displayText = $"{kvp.Key} ({kvp.Value.Count}) - R{kvp.Value.TotalPrice:F2}";
+                lbSummary_Vino.Items.Add(displayText); // Format: Item (Count) - TotalPrice
             }
+            string displayText1 = $"{reservationType}   Seats Booked: {seatsEntered}     R{reservationPrice * seatsEntered:F2}"; // Calculate the total amount including tax
 
-            // Add the reservation cost and special request cost
-            lbSummary_Vino.Items.Add($"Reservation Cost: ${reservationCost:F2}");
-            lbSummary_Vino.Items.Add($"Special Request Cost: ${specialRequestCost:F2}");
-
-            // Calculate and add the total summary price
-            decimal totalSummaryPrice = menuItemCost + reservationCost + specialRequestCost;
-
-            // Debugging output for total summary price
-            Console.WriteLine($"Total Summary Price: {totalSummaryPrice}");
-
-            lbSummary_Vino.Items.Add($"Total: ${totalSummaryPrice:F2}");
+            lbSummary_Vino.Items.Add(displayText1);
         }
+        
+        private void SaveSummaryToFile()//
+        {
+            string filePath = "summary.txt"; // Update with your actual file path
 
-
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                foreach (var item in lbSummary_Vino.Items)
+                {
+                    writer.WriteLine(item.ToString());
+                }
+            }
+        }
 
         private void lblSubTotal_Vino_Click(object sender, EventArgs e)
         {
 
+        }
+
+        
+
+
+        private void BtnSeeHst_Click(object sender, EventArgs e)
+        {
+            lbVinoHistory.Visible = !lbVinoHistory.Visible;
+
+            if (lbVinoHistory.Visible)
+            {
+                // Clear previous items in the ListBox
+                lbVinoHistory.Items.Clear();
+
+                // Define the path to the summary file
+                string historyFilePath = "summary.txt";
+
+                if (File.Exists(historyFilePath))
+                {
+                    // Read the history from the file and add it to the ListBox
+                    string[] historyLines = File.ReadAllLines(historyFilePath);
+                    foreach (string line in historyLines)
+                    {
+                        lbVinoHistory.Items.Add(line);
+                    }
+                }
+                else
+                {
+                    lbVinoHistory.Items.Add("No summary available.");
+                }
+            }
         }
     }
 }

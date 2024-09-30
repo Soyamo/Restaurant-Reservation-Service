@@ -214,12 +214,11 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             try
             {
-                string query = "INSERT INTO User_account (user_id, name, surname, email, phone_number, password) VALUES (@user_id, @Name, @Sname, @Email, @PhoneNo, @Password)";
+                string query = "INSERT INTO User_account (name, surname, email, phone_number, password) VALUES (@Name, @Sname, @Email, @PhoneNo, @Password)";
                 using (SqlConnection cnn = new SqlConnection(conString))
                 {
                     using (SqlCommand cmd = new SqlCommand(query, cnn))
                     {
-                        cmd.Parameters.AddWithValue("@user_id", txtUserID_Admin.Text);
                         cmd.Parameters.AddWithValue("@Name", txtName_Admin.Text);
                         cmd.Parameters.AddWithValue("@Sname", txtSurname_Admin.Text);
                         cmd.Parameters.AddWithValue("@Email", txtEmail_Admin.Text);
@@ -355,16 +354,15 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             try
             {
-                string query = "INSERT INTO MenuItems (item_id, restaurant_id, name, description, price) VALUES (@Item_ID, @Restaurant_id, @Item_Name, @Description, @Item_price)";
+                string query = "INSERT INTO MenuItems ( restaurant_id, name, description, price) VALUES (@Restaurant_id, @Item_Name, @Description, @Item_price)";
                 using (SqlConnection cnn = new SqlConnection(conString))
                 {
                     using (SqlCommand cmd = new SqlCommand(query, cnn))
                     {
-                        cmd.Parameters.AddWithValue("@Item_ID", txtItemID_Admin.Text);
-                        cmd.Parameters.AddWithValue("@Restaurant_id", txtResID_Admin.Text);
+                        cmd.Parameters.AddWithValue("@Restaurant_id", cBoxResID_Admin.Text);
                         cmd.Parameters.AddWithValue("@Item_Name", txtItemName_Admin.Text);
                         cmd.Parameters.AddWithValue("@Description", txtResDescr_Admin.Text);
-                        cmd.Parameters.AddWithValue("@Item_price", txtResDescr_Admin.Text);
+                        cmd.Parameters.AddWithValue("@Item_price", txtItemPrice_Admin.Text);
                         cnn.Open();
                         cmd.ExecuteNonQuery();
                         cnn.Close();
@@ -397,10 +395,10 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
                         using (SqlCommand cmd = new SqlCommand(query, cnn))
                         {
-                            cmd.Parameters.AddWithValue("@restaurant_id", txtResID_Admin.Text);
+                            cmd.Parameters.AddWithValue("@Restaurant_id", cBoxResID_Admin.Text);
                             cmd.Parameters.AddWithValue("@Item_Name", txtItemName_Admin.Text);
                             cmd.Parameters.AddWithValue("@Description", txtResDescr_Admin.Text);
-                            cmd.Parameters.AddWithValue("@price", txtResDescr_Admin.Text);
+                            cmd.Parameters.AddWithValue("@Item_price", txtItemPrice_Admin.Text);
                             cmd.Parameters.AddWithValue("@item_id", selectedId);
 
                             int rowsAffected = cmd.ExecuteNonQuery();
@@ -516,7 +514,7 @@ namespace Restaurant_Reservation_System_FinalProject_26
 
         private void Reload_Reservation()
         {
-            string query = "SELECT * FROM Reload_Reservations";
+            string query = "SELECT * FROM Reservations";
             DataTable dataTable = new DataTable();
             using (cnn = new SqlConnection(conString))
             {
@@ -533,16 +531,23 @@ namespace Restaurant_Reservation_System_FinalProject_26
         {
             try
             {
-                string query = "INSERT INTO Reservations (item_id, restaurant_id, name, description, price) VALUES (@Item_ID, @Restaurant_id, @Item_Name, @Description, @Item_price)";
+                string query = "INSERT INTO Reservations (user_id, restaurant_id, reservation_date, reservation_time, number_of_people, reservation_type, special_requests, rsvp_price) VALUES (@RSVP_UserID, @RSVP_ResID, @RSVP_date, @RSVP_Time, @No_Of_Guests, @Event_Type, @Special_req, @RSVP_Price)";
                 using (SqlConnection cnn = new SqlConnection(conString))
                 {
                     using (SqlCommand cmd = new SqlCommand(query, cnn))
                     {
-                        cmd.Parameters.AddWithValue("@Item_ID", txtRsvpID.Text);
-                        cmd.Parameters.AddWithValue("@Restaurant_id", txtEventType.Text);
-                        cmd.Parameters.AddWithValue("@Item_Name", datePicker.Text);
-                        cmd.Parameters.AddWithValue("@Description", cBoxTime.Text);
-                        cmd.Parameters.AddWithValue("@Item_price", txtNoGuestsAdmin.Text);
+
+                        DateTime reservationDate = DateTime.Parse(datePicker.Text);
+                        DateTime reservationTime = DateTime.Parse(cBoxTime.Text);
+
+                        cmd.Parameters.AddWithValue("@RSVP_UserID", cBoxRSVP_User_id.Text);
+                        cmd.Parameters.AddWithValue("@RSVP_ResID", cBoxResID.Text);
+                        cmd.Parameters.AddWithValue("@RSVP_date", reservationDate);
+                        cmd.Parameters.AddWithValue("@RSVP_Time", reservationTime);
+                        cmd.Parameters.AddWithValue("@No_Of_Guests", int.Parse(txtNoGuestsAdmin.Text));
+                        cmd.Parameters.AddWithValue("@Event_Type", txtEventType.Text);
+                        cmd.Parameters.AddWithValue("@Special_req", txtSpecReq.Text);
+                        cmd.Parameters.AddWithValue("@RSVP_Price", decimal.Parse(txtRSVP_Price.Text));
                         cnn.Open();
                         cmd.ExecuteNonQuery();
                         cnn.Close();
@@ -568,19 +573,24 @@ namespace Restaurant_Reservation_System_FinalProject_26
                 int selectedId = int.Parse(txtRsvpID.Text);
                 if (selectedId > 0)
                 {
-                    string query = "UPDATE Reservations SET reservation_id = @RSVP_ID, reservation_date = @RSVP_date, reservation_time = @RSVP_Time, number_of_people = @No_Of_Guests, reservation_type = @Event_Type, special_requests = @Special_req, rsvp_price = @RSVP_Price WHERE reservation_id = @RSVP_ID";
+                    string query = "UPDATE Reservations SET user_id = @RSVP_UserID, restaurant_id = @RSVP_ResID, reservation_date = @RSVP_date, reservation_time = @RSVP_Time, number_of_people = @No_Of_Guests, reservation_type = @Event_Type, special_requests = @Special_req, rsvp_price = @RSVP_Price WHERE reservation_id = @RSVP_ID";
                     using (SqlConnection cnn = new SqlConnection(conString))
                     {
                         cnn.Open();
 
                         using (SqlCommand cmd = new SqlCommand(query, cnn))
                         {
-                            cmd.Parameters.AddWithValue("@RSVP_date", datePicker.Text);
-                            cmd.Parameters.AddWithValue("@RSVP_Time", cBoxTime.Text);
-                            cmd.Parameters.AddWithValue("@No_Of_Guests", txtNoGuestsAdmin.Text);
+                            DateTime reservationDate = DateTime.Parse(datePicker.Text);
+                            DateTime reservationTime = DateTime.Parse(cBoxTime.Text);
+
+                            cmd.Parameters.AddWithValue("@RSVP_UserID", cBoxRSVP_User_id.Text);
+                            cmd.Parameters.AddWithValue("@RSVP_ResID", cBoxResID.Text);
+                            cmd.Parameters.AddWithValue("@RSVP_date", reservationDate);
+                            cmd.Parameters.AddWithValue("@RSVP_Time", reservationTime);
+                            cmd.Parameters.AddWithValue("@No_Of_Guests", int.Parse(txtNoGuestsAdmin.Text));
                             cmd.Parameters.AddWithValue("@Event_Type", txtEventType.Text);
                             cmd.Parameters.AddWithValue("@Special_req", txtSpecReq.Text);
-                            cmd.Parameters.AddWithValue("@RSVP_Price", txtRSVP_Price.Text);
+                            cmd.Parameters.AddWithValue("@RSVP_Price", decimal.Parse(txtRSVP_Price.Text));
                             cmd.Parameters.AddWithValue("@RSVP_ID", selectedId);
 
                             int rowsAffected = cmd.ExecuteNonQuery();
@@ -610,7 +620,7 @@ namespace Restaurant_Reservation_System_FinalProject_26
             }
             catch (FormatException)
             {
-                MessageBox.Show("Please enter a valid number for Menu Item ID.");
+                MessageBox.Show("Please enter a valid number for Reservation ID.");
             }
             catch (SqlException ex)
             {

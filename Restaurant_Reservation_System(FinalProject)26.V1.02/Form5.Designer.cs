@@ -150,6 +150,8 @@
             this.btnReview_Vino = new System.Windows.Forms.Button();
             this.lbReview_Vino = new System.Windows.Forms.ListBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.lbVinoHistory = new System.Windows.Forms.ListBox();
+            this.BtnSeeHst = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Vino)).BeginInit();
@@ -277,6 +279,7 @@
             // 
             // cbTime_Vino
             // 
+            this.cbTime_Vino.FormatString = "T";
             this.cbTime_Vino.FormattingEnabled = true;
             this.cbTime_Vino.Items.AddRange(new object[] {
             "Choose time to book:",
@@ -1603,6 +1606,8 @@
             // 
             this.tabPage5.BackColor = System.Drawing.Color.Silver;
             this.tabPage5.BackgroundImage = global::Restaurant_Reservation_System_FinalProject_26.Properties.Resources._330_768x5911;
+            this.tabPage5.Controls.Add(this.lbVinoHistory);
+            this.tabPage5.Controls.Add(this.BtnSeeHst);
             this.tabPage5.Controls.Add(this.label18);
             this.tabPage5.Controls.Add(this.rtxtReview_Vino);
             this.tabPage5.Controls.Add(this.btnReview_Vino);
@@ -1653,7 +1658,7 @@
             this.lbReview_Vino.ItemHeight = 14;
             this.lbReview_Vino.Location = new System.Drawing.Point(388, 15);
             this.lbReview_Vino.Name = "lbReview_Vino";
-            this.lbReview_Vino.Size = new System.Drawing.Size(632, 270);
+            this.lbReview_Vino.Size = new System.Drawing.Size(391, 270);
             this.lbReview_Vino.TabIndex = 1;
             // 
             // pictureBox5
@@ -1665,6 +1670,25 @@
             this.pictureBox5.Size = new System.Drawing.Size(314, 228);
             this.pictureBox5.TabIndex = 0;
             this.pictureBox5.TabStop = false;
+            // 
+            // lbVinoHistory
+            // 
+            this.lbVinoHistory.FormattingEnabled = true;
+            this.lbVinoHistory.ItemHeight = 14;
+            this.lbVinoHistory.Location = new System.Drawing.Point(802, 15);
+            this.lbVinoHistory.Name = "lbVinoHistory";
+            this.lbVinoHistory.Size = new System.Drawing.Size(375, 270);
+            this.lbVinoHistory.TabIndex = 14;
+            // 
+            // BtnSeeHst
+            // 
+            this.BtnSeeHst.Location = new System.Drawing.Point(1058, 310);
+            this.BtnSeeHst.Name = "BtnSeeHst";
+            this.BtnSeeHst.Size = new System.Drawing.Size(75, 23);
+            this.BtnSeeHst.TabIndex = 13;
+            this.BtnSeeHst.Text = "See History";
+            this.BtnSeeHst.UseVisualStyleBackColor = true;
+            this.BtnSeeHst.Click += new System.EventHandler(this.BtnSeeHst_Click);
             // 
             // Form5
             // 
@@ -1846,5 +1870,7 @@
         private System.Windows.Forms.MonthCalendar cd_vino;
         private System.Windows.Forms.NumericUpDown numericUpDown_Vino;
         private System.Windows.Forms.ComboBox cbRequests_Vino;
+        private System.Windows.Forms.ListBox lbVinoHistory;
+        private System.Windows.Forms.Button BtnSeeHst;
     }
 }

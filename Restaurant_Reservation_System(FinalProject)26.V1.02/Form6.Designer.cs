@@ -146,13 +146,13 @@
             this.txtcrdholder_Pace = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.lbPaceHistory = new System.Windows.Forms.ListBox();
+            this.BtnSeeHst = new System.Windows.Forms.Button();
             this.label18 = new System.Windows.Forms.Label();
             this.rtxtReview_Pace = new System.Windows.Forms.RichTextBox();
             this.btnReview_Pace = new System.Windows.Forms.Button();
             this.lbReview_Pace = new System.Windows.Forms.ListBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.BtnSeeHst = new System.Windows.Forms.Button();
-            this.lbPaceHistory = new System.Windows.Forms.ListBox();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1_Pace)).BeginInit();
@@ -285,6 +285,7 @@
             // 
             // cbTime_Pace
             // 
+            this.cbTime_Pace.FormatString = "T";
             this.cbTime_Pace.FormattingEnabled = true;
             this.cbTime_Pace.Items.AddRange(new object[] {
             "Choose time to book:",
@@ -1625,6 +1626,25 @@
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Reviews";
             // 
+            // lbPaceHistory
+            // 
+            this.lbPaceHistory.FormattingEnabled = true;
+            this.lbPaceHistory.ItemHeight = 14;
+            this.lbPaceHistory.Location = new System.Drawing.Point(812, 16);
+            this.lbPaceHistory.Name = "lbPaceHistory";
+            this.lbPaceHistory.Size = new System.Drawing.Size(375, 270);
+            this.lbPaceHistory.TabIndex = 11;
+            // 
+            // BtnSeeHst
+            // 
+            this.BtnSeeHst.Location = new System.Drawing.Point(1129, 320);
+            this.BtnSeeHst.Name = "BtnSeeHst";
+            this.BtnSeeHst.Size = new System.Drawing.Size(75, 23);
+            this.BtnSeeHst.TabIndex = 10;
+            this.BtnSeeHst.Text = "See History";
+            this.BtnSeeHst.UseVisualStyleBackColor = true;
+            this.BtnSeeHst.Click += new System.EventHandler(this.BtnSeeHst_Click);
+            // 
             // label18
             // 
             this.label18.AutoSize = true;
@@ -1677,25 +1697,6 @@
             this.pictureBox5.TabIndex = 5;
             this.pictureBox5.TabStop = false;
             // 
-            // BtnSeeHst
-            // 
-            this.BtnSeeHst.Location = new System.Drawing.Point(1129, 320);
-            this.BtnSeeHst.Name = "BtnSeeHst";
-            this.BtnSeeHst.Size = new System.Drawing.Size(75, 23);
-            this.BtnSeeHst.TabIndex = 10;
-            this.BtnSeeHst.Text = "See History";
-            this.BtnSeeHst.UseVisualStyleBackColor = true;
-            this.BtnSeeHst.Click += new System.EventHandler(this.BtnSeeHst_Click);
-            // 
-            // lbPaceHistory
-            // 
-            this.lbPaceHistory.FormattingEnabled = true;
-            this.lbPaceHistory.ItemHeight = 14;
-            this.lbPaceHistory.Location = new System.Drawing.Point(812, 16);
-            this.lbPaceHistory.Name = "lbPaceHistory";
-            this.lbPaceHistory.Size = new System.Drawing.Size(375, 270);
-            this.lbPaceHistory.TabIndex = 11;
-            // 
             // Form6
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1706,6 +1707,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form6";
             this.Text = "Pace";
+            this.Load += new System.EventHandler(this.Form6_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();

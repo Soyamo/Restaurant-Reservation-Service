@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
@@ -31,6 +32,7 @@ namespace Restaurant_Reservation_System_FinalProject_26
         private int restaurant_id;
         private int totalSeatsAvailable = 0;
         private int userId;
+        private string email;
         public Form7()
         {
             InitializeComponent();     
@@ -43,10 +45,13 @@ namespace Restaurant_Reservation_System_FinalProject_26
             rtxtAllergies_Asoka.Hide();
             cbTime_Asoka.SelectedIndex = 0;
             cbReserveType_Asoka.SelectedIndex = 0;
+
             txtFName_Asoka.Text = name;
             txtLName_Asoka.Text = surname;
             txtEmail_Asoka.Text = email;
             txtPhone_Asoka.Text = phone_number;
+
+            txtcrdholder_Asoka.Text = name + " "+surname;
 
             pbDeserts_Asoka.SizeMode = PictureBoxSizeMode.StretchImage;
             pbAppetizers_Asoka.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -121,6 +126,7 @@ namespace Restaurant_Reservation_System_FinalProject_26
             reservationType = cbReserveType_Asoka.SelectedItem.ToString();
 
             string query = "SELECT rsvp_price FROM Reservations WHERE reservation_type = @Reservation_type";
+            string queryUserId = "SELECT user_id FROM Use_details WHERE email = @UserEmail";
 
             using (SqlConnection connection = new SqlConnection(conString))
             {
@@ -139,14 +145,130 @@ namespace Restaurant_Reservation_System_FinalProject_26
                 {
                     MessageBox.Show($"No price found for {reservationType}.");
                 }
+                connection.Close();
+
+                connection.Open();
+                SqlCommand commandUserId = new SqlCommand(queryUserId, connection);
+                commandUserId.Parameters.AddWithValue("@UserEmail", txtEmail_Asoka.Text); // Assuming there's a textbox for email.
+                int user_id;
+                object userIdResult = commandUserId.ExecuteScalar();
+                if (userIdResult != null)
+                {
+                    user_id = Convert.ToInt32(userIdResult); // Save the user_id
+                }
+                else
+                {
+                    MessageBox.Show($"No user found with the email {txtEmail_Asoka.Text}.");
+                    return;
+                }
+                connection.Close();
+
+                
+                try
+                {
+                    // Get the date from DatePicker (already a DateTime object)
+                    DateTime reservationDate = cd_Asoka.SelectionStart;
+
+                    TimeSpan reservationTimeSpan;
+                    if (TimeSpan.TryParse(cbTime_Asoka.Text, out reservationTimeSpan))
+                    {
+                        DateTime reservationDateTime = reservationDate.Date + reservationTimeSpan;
+                        string sql = "INSERT INTO Reservations (user_id, restaurant_id, reservation_date, reservation_time, number_of_people, reservation_type, special_requests, rsvp_price) VALUES (@RSVP_UserID, @RSVP_ResID, @RSVP_date, @RSVP_Time, @No_Of_Guests, @Event_Type, @Special_req, @RSVP_Price)";
+                        using (SqlConnection cnn = new SqlConnection(conString))
+                        {
+                            using (SqlCommand cmd = new SqlCommand(sql, cnn))
+                            {
+                                decimal numeric = numericUpDown1_Asoka.Value;
+
+                                cmd.Parameters.AddWithValue("@RSVP_UserID", user_id);
+                                cmd.Parameters.AddWithValue("@RSVP_ResID", 5);
+                                cmd.Parameters.AddWithValue("@RSVP_date", reservationDate);
+                                cmd.Parameters.AddWithValue("@RSVP_Time", reservationDateTime);
+                                cmd.Parameters.AddWithValue("@No_Of_Guests", numeric);
+                                cmd.Parameters.AddWithValue("@Event_Type", cbReserveType_Asoka.Text);
+                                cmd.Parameters.AddWithValue("@Special_req", cbRequest_Asoka.Text);
+                                cmd.Parameters.AddWithValue("@RSVP_Price", reservationPrice);
+                                cnn.Open();
+                                cmd.ExecuteNonQuery();
+                                cnn.Close();
+                                MessageBox.Show("Reservation Booked successfully!");
+                            }
+                        }
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show($"SQL Error: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred: {ex.Message}");
+                }
 
             }
             tabControl1.SelectedTab = tabPage3;
+
+            
         }
         //2.(Payment of reservation and menu items)
         private void btnPay_Asoka_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectedTab = tabPage5;
+            string name = txtcrdholder_Asoka.Text;
+            string cvv = txtCVV_Asoka.Text;
+            string cardNumber = txtcrdNo_Asoka.Text;
+            bool isValid = true;
+
+            // Validate cardholder's name
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                MessageBox.Show("Name cannot be empty.");
+                isValid = false;
+            }
+            else
+            {
+                foreach (char c in name)
+                {
+                    if (!char.IsLetter(c) && !char.IsWhiteSpace(c))
+                    {
+                        MessageBox.Show("Name can only contain letters and spaces.");
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+            // Validate CVV
+            if (isValid)
+            {
+                if (cvv.Length == 3 && int.TryParse(cvv, out _))
+                {
+                    // CVV is valid
+                }
+                else
+                {
+                    MessageBox.Show("Invalid CVV. Please enter exactly 3 digits.");
+                    isValid = false;
+                }
+            }
+            // Validate Card Number
+            if (isValid)
+            {
+                if (cardNumber.Length == 16 && long.TryParse(cardNumber, out _))
+                {
+                    // Card number is valid
+                }
+                else
+                {
+                    MessageBox.Show("Invalid Card Number. Please enter exactly 16 digits.");
+                    isValid = false;
+                }
+            }
+            // Proceed if all validations are successful
+            if (isValid)
+            {
+                MessageBox.Show("Transaction was successful!!!");
+                tabControl1.SelectedTab = tabPage5;
+            }
+            SaveSummaryToFile();
         }
         //3.(Back button)
         private void btnBackAsoka_pg3_Click(object sender, EventArgs e)
@@ -1542,6 +1664,52 @@ namespace Restaurant_Reservation_System_FinalProject_26
             {
                 // This condition should not occur due to the input validation above
                 lblNoOfSeats_Asoka.Text = "Seats Left: Not enough seats available";
+            }
+        }
+
+        private void SaveSummaryToFile()//
+        {
+            string filePath = "summary.txt"; // Update with your actual file path
+
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                foreach (var item in lbSummary_Asoka.Items)
+                {
+                    writer.WriteLine(item.ToString());
+                }
+            }
+        }
+
+        private void BtnSeeHst_Click(object sender, EventArgs e)
+        {
+            if (!lbAsokaHistory.Visible)
+            {
+                // Show the ListBox and load the history
+                lbAsokaHistory.Visible = true;
+                lbAsokaHistory.Items.Clear(); // Clear previous items
+
+                // Define the path to the history file, using the email as the filename
+                string historyFilePath = $"{email}_history.txt";
+
+                if (File.Exists(historyFilePath))
+                {
+                    // Read the history from the file and add it to the ListBox
+                    string[] historyLines = File.ReadAllLines(historyFilePath);
+                    foreach (string line in historyLines)
+                    {
+                        lbAsokaHistory.Items.Add(line);
+                    }
+                }
+                else
+                {
+                    // If no history file is found, display a message
+                    lbAsokaHistory.Items.Add("No history available.");
+                }
+            }
+            else
+            {
+                // Hide the ListBox if it is already visible
+                lbAsokaHistory.Visible = false;
             }
         }
     }
